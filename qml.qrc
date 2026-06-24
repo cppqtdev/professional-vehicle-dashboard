@@ -88,5 +88,6 @@
         <file>images/car_topview_h.svg</file>
         <file>images/album_cover.svg</file>
         <file>qml/App/Components/BottonTabButton.qml</file>
+        <file>images/car.png</file>
     </qresource>
 </RCC>

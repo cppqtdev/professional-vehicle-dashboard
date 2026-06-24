@@ -36,8 +36,8 @@ Control {
                 spacing: 14
 
                 RowLayout {
-                    spacing: 10
-                    AppIcon { source: Icons.battery; size: 24; color: Theme.colors.success }
+                    spacing: 12
+                    AppIcon { source: Icons.battery; size: 32; color: Theme.colors.success }
                     Text {
                         text: view.controller.charging ? "Charging" : "Battery"
                         color: Theme.colors.textSecondary

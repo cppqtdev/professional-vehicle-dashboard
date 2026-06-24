@@ -25,11 +25,11 @@ Item {
     signal toggled(bool checked)
 
     implicitWidth: Theme.metrics.tileWidth
-    implicitHeight: Theme.metrics.tileHeight + 36
+    implicitHeight: Theme.metrics.tileHeight + 42
 
     Column {
         anchors.horizontalCenter: parent.horizontalCenter
-        spacing: 12
+        spacing: 13
 
         Surface {
             id: pill
@@ -45,7 +45,7 @@ Item {
             AppIcon {
                 anchors.centerIn: parent
                 source: control.iconSource
-                size: 30
+                size: control.text === "Notification" || control.text === "Hotspot" ? 31 : 32
                 color: control.checked ? Theme.colors.onaccent : Theme.colors.icon
             }
 
@@ -60,7 +60,7 @@ Item {
             color: Theme.colors.textPrimary
             font.family: Theme.typography.family
             font.pixelSize: Theme.typography.label
-            font.weight: Theme.typography.weightMedium
+            font.weight: Theme.typography.weightRegular
         }
     }
 

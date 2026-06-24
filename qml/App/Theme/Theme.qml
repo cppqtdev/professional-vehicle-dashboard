@@ -97,12 +97,12 @@ QtObject {
 
     // ---- Typography -------------------------------------------------------
     readonly property QtObject typography: QtObject {
-        readonly property string family: Qt.application.font.family
+        readonly property string family: "Helvetica Neue"
         readonly property int displayTime: 30  // rail clock
         readonly property int title:       30  // page titles / now-playing track
-        readonly property int subtitle:    18
-        readonly property int status:      19  // status bar
-        readonly property int label:       16  // toggle captions
+        readonly property int subtitle:    19
+        readonly property int status:      20  // status bar
+        readonly property int label:       18  // toggle captions
         readonly property int caption:     14
         readonly property int weightBold:    700
         readonly property int weightMedium:  500
@@ -114,12 +114,12 @@ QtObject {
         readonly property int panelRadius: 28
         readonly property int tileRadius:  32
         readonly property int cardRadius:  22
-        readonly property int tileWidth:   116
-        readonly property int tileHeight:  74
+        readonly property int tileWidth:   124
+        readonly property int tileHeight:  76
         readonly property int iconSize:    26
         readonly property int railWidth:   72
-        readonly property int sliderHeight: 46
-        readonly property int sliderHandle: 56
+        readonly property int sliderHeight: 48
+        readonly property int sliderHandle: 58
         readonly property int spacing:     22
         readonly property int paddingLg:   28
         readonly property int paddingMd:   18

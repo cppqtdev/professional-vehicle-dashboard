@@ -12,6 +12,7 @@ Surface {
     property string value: ""
     property string label: ""
     property color accent: Theme.colors.accent
+    property int iconSize: 32
 
     radius: Theme.metrics.cardRadius
     neomorph: true
@@ -28,11 +29,11 @@ Surface {
         spacing: 12
 
         Row {
-            spacing: 16
+            spacing: 18
             AppIcon {
                 anchors.verticalCenter: parent.verticalCenter
                 source: card.icon
-                size: 24
+                size: card.iconSize
                 color: card.accent
             }
             Text {

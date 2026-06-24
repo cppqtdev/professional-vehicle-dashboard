@@ -6,9 +6,9 @@ import App.Screens
 Window {
     id: window
     width: 1180
-    height: 520
+    height: 580
     minimumWidth: 900
-    minimumHeight: 430
+    minimumHeight: 580
     visible: true
     color: Theme.colors.background
     title: qsTr("Smart UI — Infotainment")

@@ -96,7 +96,7 @@ QtObject {
     readonly property url cDiscover: base + "c-discover.svg"
 
     // illustrations
-    readonly property url carTopView:  "qrc:/images/car_topview.svg"
-    readonly property url carTopViewH: "qrc:/images/car_topview_h.svg"
+    readonly property url carTopView:  "qrc:/images/car.png"
+    readonly property url carTopViewH: "qrc:/images/car.png"
     readonly property url albumCover:  "qrc:/images/album_cover.svg"
 }
