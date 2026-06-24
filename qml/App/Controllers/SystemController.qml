@@ -63,6 +63,7 @@ QtObject {
     property bool ecoMode: appBackend.ecoMode
     property bool darkTheme: appBackend.darkTheme
     property bool textureEnabled: appBackend.textureEnabled
+    property string homeWidget: appBackend.homeWidget
     property string language: "English"
     property string units: "Metric"
 

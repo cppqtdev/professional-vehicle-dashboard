@@ -25,6 +25,7 @@ class AppBackend : public QObject
     Q_PROPERTY(bool autoLock READ autoLock WRITE setAutoLock NOTIFY settingsChanged)
     Q_PROPERTY(bool driverAssist READ driverAssist WRITE setDriverAssist NOTIFY settingsChanged)
     Q_PROPERTY(bool ecoMode READ ecoMode WRITE setEcoMode NOTIFY settingsChanged)
+    Q_PROPERTY(QString homeWidget READ homeWidget WRITE setHomeWidget NOTIFY settingsChanged)
     Q_PROPERTY(QVariantList forecast READ forecast NOTIFY weatherChanged)
 
 public:
@@ -45,6 +46,7 @@ public:
     bool autoLock() const;
     bool driverAssist() const;
     bool ecoMode() const;
+    QString homeWidget() const;
     QVariantList forecast() const;
 
     void setTextureEnabled(bool enabled);
@@ -53,6 +55,7 @@ public:
     void setAutoLock(bool enabled);
     void setDriverAssist(bool enabled);
     void setEcoMode(bool enabled);
+    void setHomeWidget(const QString &widget);
 
     Q_INVOKABLE void refreshWeather();
 
@@ -70,6 +73,7 @@ private:
     QString textureFromCode(int code) const;
     void loadSettings();
     void saveSetting(const QString &key, bool value);
+    void saveSetting(const QString &key, const QString &value);
 
     QNetworkAccessManager m_network;
     QSettings m_settings;
@@ -91,6 +95,7 @@ private:
     bool m_autoLock = true;
     bool m_driverAssist = true;
     bool m_ecoMode = false;
+    QString m_homeWidget = QStringLiteral("weather");
     QVariantList m_forecast;
 };
 

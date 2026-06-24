@@ -129,6 +129,73 @@ Control {
         }
     }
 
+    component WidgetPicker: Surface {
+        id: picker
+        property string value: "weather"
+        radius: 18
+        neomorph: true
+        color: Theme.colors.tile
+        leftPadding: 22
+        rightPadding: 22
+        padding: 14
+
+        contentItem: RowLayout {
+            spacing: 14
+
+            AppIcon {
+                source: Icons.home
+                size: 22
+                color: Theme.colors.icon
+            }
+            Text {
+                text: "Home widget"
+                color: Theme.colors.textPrimary
+                font.family: Theme.typography.family
+                font.pixelSize: Theme.typography.subtitle
+                font.weight: Theme.typography.weightMedium
+            }
+            Item { Layout.fillWidth: true }
+
+            Repeater {
+                model: [
+                    { key: "weather", label: "Weather" },
+                    { key: "music", label: "Music" },
+                    { key: "energy", label: "Energy" },
+                    { key: "quick", label: "Quick" },
+                    { key: "navigation", label: "Nav" },
+                    { key: "climate", label: "Climate" },
+                    { key: "tires", label: "Tires" },
+                    { key: "trip", label: "Trip" }
+                ]
+                delegate: Surface {
+                    required property var modelData
+                    readonly property bool selected: picker.value === modelData.key
+                    Layout.preferredWidth: 82
+                    Layout.preferredHeight: 38
+                    radius: height / 2
+                    color: selected ? Theme.colors.accent : Theme.colors.surfaceVariant
+                    neomorph: !selected
+                    pressed: optionMouse.pressed
+
+                    Text {
+                        anchors.centerIn: parent
+                        text: modelData.label
+                        color: selected ? Theme.colors.onaccent : Theme.colors.textSecondary
+                        font.family: Theme.typography.family
+                        font.pixelSize: Theme.typography.caption
+                        font.weight: Theme.typography.weightMedium
+                    }
+                    MouseArea {
+                        id: optionMouse
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: appBackend.homeWidget = modelData.key
+                    }
+                }
+            }
+        }
+    }
+
     // ---- Layout -----------------------------------------------------------
     contentItem: Flickable {
         anchors.fill: parent
@@ -177,6 +244,12 @@ Control {
                         value: view.controller.volume
                         onMoved: (v) => view.controller.volume = v
                     }
+                }
+
+                WidgetPicker {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 66
+                    value: view.controller.homeWidget
                 }
 
                 // switches

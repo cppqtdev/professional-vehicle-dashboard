@@ -41,6 +41,7 @@ bool AppBackend::wifiOn() const { return m_wifiOn; }
 bool AppBackend::autoLock() const { return m_autoLock; }
 bool AppBackend::driverAssist() const { return m_driverAssist; }
 bool AppBackend::ecoMode() const { return m_ecoMode; }
+QString AppBackend::homeWidget() const { return m_homeWidget; }
 QVariantList AppBackend::forecast() const { return m_forecast; }
 
 void AppBackend::setTextureEnabled(bool enabled)
@@ -94,6 +95,25 @@ void AppBackend::setEcoMode(bool enabled)
         return;
     m_ecoMode = enabled;
     saveSetting(QStringLiteral("ecoMode"), enabled);
+    emit settingsChanged();
+}
+
+void AppBackend::setHomeWidget(const QString &widget)
+{
+    static const QStringList allowed = {
+        QStringLiteral("weather"),
+        QStringLiteral("music"),
+        QStringLiteral("energy"),
+        QStringLiteral("quick"),
+        QStringLiteral("navigation"),
+        QStringLiteral("climate"),
+        QStringLiteral("tires"),
+        QStringLiteral("trip")
+    };
+    if (!allowed.contains(widget) || m_homeWidget == widget)
+        return;
+    m_homeWidget = widget;
+    saveSetting(QStringLiteral("homeWidget"), widget);
     emit settingsChanged();
 }
 
@@ -252,9 +272,16 @@ void AppBackend::loadSettings()
     m_autoLock = m_settings.value(QStringLiteral("autoLock"), true).toBool();
     m_driverAssist = m_settings.value(QStringLiteral("driverAssist"), true).toBool();
     m_ecoMode = m_settings.value(QStringLiteral("ecoMode"), false).toBool();
+    m_homeWidget = m_settings.value(QStringLiteral("homeWidget"), QStringLiteral("weather")).toString();
 }
 
 void AppBackend::saveSetting(const QString &key, bool value)
+{
+    m_settings.setValue(key, value);
+    m_settings.sync();
+}
+
+void AppBackend::saveSetting(const QString &key, const QString &value)
 {
     m_settings.setValue(key, value);
     m_settings.sync();

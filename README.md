@@ -4,6 +4,63 @@ A small but production-shaped Qt Quick app that recreates the car control-panel
 mockup with full **light + dark** theming, reusable components, and module-based
 imports (no `../` paths).
 
+## Product Roadmap / Pending Case Study Features
+
+This backlog is based on modern automotive HMI patterns from Android for Cars,
+CarPlay-style dashboards, EV control systems, and in-car glanceable UI design.
+
+### Implemented
+
+- Live clock and date from the C++ backend.
+- Live Open-Meteo weather for Nanshan/Shenzhen with forecast fallback.
+- Persisted dark/light theme with `QSettings`.
+- Persisted weather texture toggle with `QSettings`.
+- Persisted settings toggles for Wi-Fi, auto lock, driver assist, and eco mode.
+- Customizable Home right-side widget slot.
+- Home widget options: Weather, Music, Energy, Quick Controls, Navigation,
+  Climate, Vehicle Status/Tires, and Trip.
+- Home weather detail view with 5-day forecast.
+- Music browse/detail pages.
+- Control, Energy, and Settings tabs inside the vehicle control screen.
+- Infotainment quick-settings page opened from the sidebar menu.
+
+### High Priority Next
+
+- Home widget editor with drag/reorder, widget size presets, and live preview.
+- Multiple Home widget slots instead of only one right-side widget.
+- Dedicated Navigation page: map mock, route cards, ETA, traffic, nearby chargers
+  and parking.
+- Vehicle status page: doors, windows, lights, tire pressure, warnings, service
+  reminders.
+- Climate page: seat heat/ventilation, airflow direction, defrost, fan zones,
+  sync mode.
+- EV/energy expansion: charging schedule, charge limit, battery health, cost
+  estimate, route-aware range.
+- App launcher/menu page: grid of apps with categories and search.
+- Notifications center: vehicle alerts, calls/messages, weather alerts,
+  maintenance reminders.
+
+### Medium Priority
+
+- Driver profile system with saved seat/climate/theme/widget preferences.
+- Voice assistant panel with command suggestions and listening state.
+- Safety states: driving lockouts, simplified UI while moving, larger active
+  touch targets.
+- Theme system: auto day/night, ambient accent color, wallpaper/texture packs.
+- Side navigation redesign: active indicators, badges, long-press shortcuts.
+- Parked mode: video/apps/browser-style dashboard only while parked.
+- Calendar/commute widget and calls/messages widgets.
+- Accessibility pass: contrast, touch targets, focus order, reduced motion.
+
+### Case Study Polish
+
+- Document design tokens and component library.
+- Add interaction-state screenshots for hover/pressed/active/disabled.
+- Add before/after comparison screens for each feature area.
+- Add architecture diagram for C++ backend, QML controller, and reusable
+  components.
+- Add UX rationale for glanceability, visual hierarchy, safety, and persistence.
+
 ## Architecture
 
 ```
