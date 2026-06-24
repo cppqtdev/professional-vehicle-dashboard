@@ -2,7 +2,7 @@
 // Application frame: paints the canvas + floating panel, hosts the persistent
 // SideRail, and swaps pages based on the rail selection.
 //
-// Rail mapping: car & nav -> Control page, music -> Media page.
+// Rail mapping: nav -> Home, music -> Music, car -> Control, menu -> Infotainment.
 
 import QtQuick
 import QtQuick.Layouts
@@ -51,12 +51,14 @@ Item {
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.bottom: parent.bottom
-            // rail: nav (0) -> Home, music (1) -> Media, car (2) -> Control
+            // rail: nav (0) -> Home, music (1) -> Music, car (2) -> Control,
+            // menu (3) -> Infotainment quick settings
             currentIndex: system.navIndex
 
             HomePage { controller: system }
             MusicPage { controller: system }
             ControlPage { controller: system }
+            InfotainmentPage { controller: system }
         }
     }
 }

@@ -18,14 +18,20 @@
 //     }
 
 import QtQuick
+import QtQuick.Controls.Basic
 import QtQuick.Effects
 import App.Theme
 
-Item {
+Control {
     id: root
 
     property color color: Theme.colors.surface
+
     property real radius: Theme.metrics.tileRadius
+    property real topleftradius: radius
+    property real bottomleftradius: radius
+    property real toprightradius: radius
+    property real bottomrightradius: radius
 
     // Soft-UI dual shadow
     property bool neomorph: false
@@ -50,7 +56,10 @@ Item {
     // never a white glow). Intensity is set per theme via shadowOpacity.
     Rectangle {
         anchors.fill: parent
-        radius: root.radius
+        topLeftRadius: root.topleftradius
+        bottomLeftRadius: root.bottomleftradius
+        topRightRadius: root.toprightradius
+        bottomRightRadius: root.bottomrightradius
         color: root.color
         visible: root.neomorph
         layer.enabled: root.neomorph
@@ -70,7 +79,10 @@ Item {
     // ---- Dark shadow (bottom-right) ---------------------------------------
     Rectangle {
         anchors.fill: parent
-        radius: root.radius
+        topLeftRadius: root.topleftradius
+        bottomLeftRadius: root.bottomleftradius
+        topRightRadius: root.toprightradius
+        bottomRightRadius: root.bottomrightradius
         color: root.color
         visible: root.neomorph
         layer.enabled: root.neomorph
@@ -91,7 +103,10 @@ Item {
     Rectangle {
         id: bg
         anchors.fill: parent
-        radius: root.radius
+        topLeftRadius: root.topleftradius
+        bottomLeftRadius: root.bottomleftradius
+        topRightRadius: root.toprightradius
+        bottomRightRadius: root.bottomrightradius
         color: root.color
 
         layer.enabled: root.elevated && !root.neomorph

@@ -32,9 +32,16 @@ Item {
         signal clicked()
         radius: height / 2
         neomorph: true
+        pressed: shortcutMouse.pressed
         color: Theme.colors.tile
+        scale: shortcutMouse.pressed ? 0.96 : 1.0
         implicitWidth: row.implicitWidth + 44
         implicitHeight: 56
+
+        Behavior on scale {
+            NumberAnimation { duration: Theme.motion.fast; easing.type: Easing.OutCubic }
+        }
+
         Row {
             id: row
             anchors.centerIn: parent
@@ -52,7 +59,13 @@ Item {
                 font.weight: Theme.typography.weightMedium
             }
         }
-        MouseArea { anchors.fill: parent; cursorShape: Qt.PointingHandCursor; onClicked: pill.clicked() }
+        MouseArea {
+            id: shortcutMouse
+            anchors.fill: parent
+            hoverEnabled: true
+            cursorShape: Qt.PointingHandCursor
+            onClicked: pill.clicked()
+        }
     }
 
     StackLayout {
@@ -107,7 +120,11 @@ Item {
                 Row {
                     spacing: 16
                     topPadding: 12
-                    ShortcutPill { icon: Icons.home; label: "Home" }
+                    ShortcutPill {
+                        icon: Icons.home
+                        label: "Home"
+                        onClicked: page.controller.weatherDetailOpen = false
+                    }
                     ShortcutPill { icon: Icons.briefcase; label: "Company" }
                 }
             }
@@ -204,10 +221,11 @@ Item {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.top: parent.top
-                anchors.leftMargin: 4
-                anchors.rightMargin: 8
-                height: 48
-                spacing: 14
+                anchors.leftMargin: 34
+                anchors.rightMargin: 32
+                anchors.topMargin: 24
+                height: 42
+                spacing: 30
 
                 AppIcon {
                     source: Icons.back; size: 24; color: Theme.colors.icon
@@ -222,108 +240,113 @@ Item {
                     text: page.controller.city
                     color: Theme.colors.textPrimary
                     font.family: Theme.typography.family
-                    font.pixelSize: Theme.typography.title
-                    font.weight: Theme.typography.weightBold
+                    font.pixelSize: 29
+                    font.weight: Theme.typography.weightMedium
                     verticalAlignment: Text.AlignVCenter
                 }
-                AppIcon { source: Icons.more; size: 20; color: Theme.colors.iconMuted }
+                AppIcon { source: Icons.more; size: 22; color: Theme.colors.icon }
             }
 
-            RowLayout {
+            Item {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.top: detailTop.bottom
                 anchors.bottom: parent.bottom
-                anchors.topMargin: Theme.metrics.paddingMd
-                spacing: Theme.metrics.spacing
+                anchors.topMargin: 42
 
                 // current conditions
-                ColumnLayout {
-                    Layout.preferredWidth: 240
-                    Layout.fillHeight: true
+                Column {
+                    id: currentWeather
+                    anchors.left: parent.left
+                    anchors.leftMargin: 34
+                    anchors.top: parent.top
                     spacing: 6
                     Text {
                         text: page.controller.weatherTemp + "°"
                         color: Theme.colors.textPrimary
                         font.family: Theme.typography.family
-                        font.pixelSize: 64
-                        font.weight: Theme.typography.weightBold
+                        font.pixelSize: 42
+                        font.weight: Theme.typography.weightMedium
                     }
                     Text {
                         text: page.controller.weatherCondition
                         color: Theme.colors.textSecondary
                         font.family: Theme.typography.family
-                        font.pixelSize: Theme.typography.subtitle
+                        font.pixelSize: 16
                     }
                     Text {
                         text: "Chance of Rain: " + page.controller.rainChance + "%"
                         color: Theme.colors.textSecondary
                         font.family: Theme.typography.family
-                        font.pixelSize: Theme.typography.caption
+                        font.pixelSize: 16
                     }
-                    Item { Layout.fillHeight: true }
-                    Image {
-                        Layout.alignment: Qt.AlignHCenter
-                        width: 120; height: 120
-                        source: Icons.wStorm
-                        fillMode: Image.PreserveAspectFit
-                        smooth: true; mipmap: true
-                    }
-                    Item { Layout.fillHeight: true }
                 }
 
-                // 5-day forecast — tight top-aligned columns
-                RowLayout {
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    Layout.alignment: Qt.AlignTop
-                    spacing: 14
+                Image {
+                    anchors.left: currentWeather.left
+                    anchors.top: currentWeather.bottom
+                    anchors.topMargin: 30
+                    width: 118; height: 118
+                    source: Icons.wStorm
+                    fillMode: Image.PreserveAspectFit
+                    smooth: true; mipmap: true
+                }
+
+                // 5-day forecast — fixed-width, top-aligned columns
+                Row {
+                    anchors.left: parent.left
+                    anchors.leftMargin: 265
+                    anchors.right: parent.right
+                    anchors.rightMargin: 42
+                    anchors.top: parent.top
+                    spacing: 38
                     Repeater {
                         model: page.controller.forecast
-                        delegate: ColumnLayout {
+                        delegate: Column {
                             required property var modelData
-                            Layout.fillWidth: true
-                            Layout.alignment: Qt.AlignTop
-                            spacing: 10
+                            width: 104
+                            spacing: 9
 
                             Text {
-                                Layout.alignment: Qt.AlignHCenter
+                                anchors.horizontalCenter: parent.horizontalCenter
                                 text: modelData.day
-                                color: Theme.colors.textSecondary
+                                color: Theme.colors.textPrimary
                                 font.family: Theme.typography.family
-                                font.pixelSize: Theme.typography.caption
+                                font.pixelSize: 17
                                 font.weight: Theme.typography.weightMedium
                             }
-                            Image {
-                                Layout.alignment: Qt.AlignHCenter
-                                Layout.topMargin: 8
-                                width: 62; height: 62
-                                source: page.wIcon(modelData.icon)
-                                fillMode: Image.PreserveAspectFit
-                                smooth: true; mipmap: true
+                            Item {
+                                width: parent.width
+                                height: 86
+                                Image {
+                                    anchors.centerIn: parent
+                                    width: 64; height: 64
+                                    source: page.wIcon(modelData.icon)
+                                    fillMode: Image.PreserveAspectFit
+                                    smooth: true; mipmap: true
+                                }
                             }
                             Text {
-                                Layout.alignment: Qt.AlignHCenter
-                                Layout.topMargin: 4
+                                anchors.horizontalCenter: parent.horizontalCenter
                                 text: modelData.lo + "°/" + modelData.hi + "°"
                                 color: Theme.colors.textPrimary
                                 font.family: Theme.typography.family
-                                font.pixelSize: Theme.typography.subtitle
+                                font.pixelSize: 22
                                 font.weight: Theme.typography.weightMedium
                             }
                             Text {
-                                Layout.alignment: Qt.AlignHCenter
+                                anchors.horizontalCenter: parent.horizontalCenter
                                 text: modelData.cond
                                 color: Theme.colors.textSecondary
                                 font.family: Theme.typography.family
-                                font.pixelSize: Theme.typography.caption
+                                font.pixelSize: 15
                             }
                             Text {
-                                Layout.alignment: Qt.AlignHCenter
+                                anchors.horizontalCenter: parent.horizontalCenter
                                 text: "Rain " + modelData.rain + "%"
                                 color: Theme.colors.textSecondary
                                 font.family: Theme.typography.family
-                                font.pixelSize: Theme.typography.caption
+                                font.pixelSize: 15
                             }
                         }
                     }

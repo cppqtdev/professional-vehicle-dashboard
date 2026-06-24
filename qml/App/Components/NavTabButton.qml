@@ -8,34 +8,22 @@ import App.Theme
 
 Basic.TabButton {
     id: control
-
-    property int tabWidth: 168
-
-    implicitWidth: tabWidth
-    implicitHeight: 52
-    padding: 0
+    property int tabWidth: parent && parent.buttonWidth ? parent.buttonWidth : 184
 
     contentItem: Item {
         id: body
         scale: control.down ? 0.95 : 1.0
         Behavior on scale { NumberAnimation { duration: 120; easing.type: Easing.OutCubic } }
 
-        // hover / press background
-        Rectangle {
-            anchors.fill: parent
-            radius: 14
-            color: control.down ? Qt.rgba(0.5, 0.5, 0.6, 0.16)
-                                 : (control.hovered ? Qt.rgba(0.5, 0.5, 0.6, 0.08) : "transparent")
-            Behavior on color { ColorAnimation { duration: 120 } }
-        }
-
         Text {
             id: label
             anchors.centerIn: parent
             text: control.text
-            color: control.checked ? Theme.colors.textPrimary : Theme.colors.textSecondary
+            color: control.checked || control.hovered
+                   ? Theme.colors.textPrimary
+                   : Theme.colors.textSecondary
             font.family: Theme.typography.family
-            font.pixelSize: 24
+            font.pixelSize: 18
             font.weight: control.checked ? Theme.typography.weightBold
                                           : Theme.typography.weightRegular
             Behavior on color { ColorAnimation { duration: Theme.motion.fast } }
@@ -46,7 +34,7 @@ Basic.TabButton {
             anchors.horizontalCenter: label.horizontalCenter
             anchors.top: label.bottom
             anchors.topMargin: 8
-            width: label.implicitWidth + 6
+            width: Math.max(86, label.implicitWidth + 8)
             height: 3
             radius: 1.5
             color: Theme.colors.accent
@@ -55,5 +43,8 @@ Basic.TabButton {
         }
     }
 
-    background: Item {}
+    background: Item {
+        implicitWidth: tabWidth
+        implicitHeight: 32
+    }
 }

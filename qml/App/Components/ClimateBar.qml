@@ -10,13 +10,13 @@
 //     }
 
 import QtQuick
+import QtQuick.Controls.Basic
 import QtQuick.Layouts
 import App.Theme
-import App.Components
 import App.Icons
 
-Surface {
-    id: bar
+TabBar {
+    id: control
 
     property real leftTemp: 18.0
     property real rightTemp: 18.0
@@ -25,99 +25,121 @@ Surface {
     signal leftTempStep(real delta)
     signal rightTempStep(real delta)
 
-    radius: height / 2
-    neomorph: true
-    color: Theme.colors.tile
-    implicitHeight: 84
+    leftPadding: 10
+    rightPadding: 10
+    padding: 20
+    bottomPadding: 0
+
+    background: Item {
+        implicitHeight: 84
+    }
 
     // ---- Inline parts -----------------------------------------------------
-    component Seg: Item {
+    component Seg: BottonTabButton {
         id: seg
-        property url icon
+        property string iconsource: ""
         signal activated()
+
         Layout.fillWidth: true
         Layout.fillHeight: true
+
+        onClicked: seg.activated()
+
         AppIcon {
             anchors.centerIn: parent
-            source: seg.icon
-            size: 27
+            source: seg.iconsource
+            size: 28
             color: Theme.colors.icon
         }
+
         MouseArea {
             anchors.fill: parent
             cursorShape: Qt.PointingHandCursor
-            onClicked: seg.activated()
+            acceptedButtons: Qt.NoButton
         }
     }
 
     component Sep: Rectangle {
         Layout.preferredWidth: 1
-        Layout.preferredHeight: 40
+        Layout.preferredHeight: 38
         Layout.alignment: Qt.AlignVCenter
         color: Theme.colors.divider
     }
 
-    component Temp: ColumnLayout {
+    component Temp: BottonTabButton {
         id: t
         property real value: 18.0
         signal step(real delta)
+
         Layout.fillWidth: true
         Layout.fillHeight: true
         spacing: 0
 
-        AppIcon {
-            Layout.alignment: Qt.AlignHCenter
-            source: Icons.chevronUp
-            size: 16
-            color: Theme.colors.iconMuted
-            MouseArea {
-                anchors.fill: parent
-                anchors.margins: -8
-                cursorShape: Qt.PointingHandCursor
-                onClicked: t.step(0.5)
+        contentItem: ColumnLayout {
+            spacing: 3
+
+            AppIcon {
+                Layout.alignment: Qt.AlignHCenter
+                source: Icons.chevronUp
+                size: 14
+                color: Theme.colors.iconMuted
+
+                MouseArea {
+                    anchors.fill: parent
+                    anchors.margins: -8
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: t.step(0.5)
+                }
             }
-        }
-        Text {
-            Layout.alignment: Qt.AlignHCenter
-            text: t.value.toFixed(1)
-            color: Theme.colors.textPrimary
-            font.family: Theme.typography.family
-            font.pixelSize: 24
-            font.weight: Theme.typography.weightMedium
-        }
-        AppIcon {
-            Layout.alignment: Qt.AlignHCenter
-            source: Icons.chevronDown
-            size: 16
-            color: Theme.colors.iconMuted
-            MouseArea {
-                anchors.fill: parent
-                anchors.margins: -8
-                cursorShape: Qt.PointingHandCursor
-                onClicked: t.step(-0.5)
+
+            Text {
+                Layout.alignment: Qt.AlignHCenter
+                text: t.value.toFixed(1)
+                color: Theme.colors.textPrimary
+                font.family: Theme.typography.family
+                font.pixelSize: 14
+                font.weight: Theme.typography.weightMedium
+            }
+
+            AppIcon {
+                Layout.alignment: Qt.AlignHCenter
+                source: Icons.chevronDown
+                size: 14
+                color: Theme.colors.iconMuted
+                MouseArea {
+                    anchors.fill: parent
+                    anchors.margins: -8
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: t.step(-0.5)
+                }
             }
         }
     }
 
     // ---- Layout -----------------------------------------------------------
-    RowLayout {
-        anchors.fill: parent
-        anchors.leftMargin: 22
-        anchors.rightMargin: 22
+    contentItem: RowLayout {
         spacing: 0
 
-        Seg { icon: Icons.steering }
+        Seg {
+            iconsource: Icons.steering
+            topleftradius: height / 2
+            bottomleftradius: height / 2
+        }
         Sep {}
-        Seg { icon: Icons.seat }
+        Seg { iconsource: Icons.seat }
         Sep {}
-        Temp { value: bar.leftTemp; onStep: (d) => bar.leftTempStep(d) }
+        Temp { value: control.leftTemp; onStep: (d) => control.leftTempStep(d) }
         Sep {}
-        Seg { icon: Icons.fan }
+        Seg { iconsource: Icons.fan }
         Sep {}
-        Temp { value: bar.rightTemp; onStep: (d) => bar.rightTempStep(d) }
+        Temp { value: control.rightTemp; onStep: (d) => control.rightTempStep(d) }
         Sep {}
-        Seg { icon: Icons.seat }
+        Seg { iconsource: Icons.seat }
         Sep {}
-        Seg { icon: Icons.defrost }
+        Seg {
+            iconsource: Icons.defrost
+            toprightradius: height / 2
+            bottomrightradius: height / 2
+        }
     }
 }

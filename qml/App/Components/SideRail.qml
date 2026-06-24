@@ -13,7 +13,7 @@ Rectangle {
 
     property string hours: "09"
     property string minutes: "35"
-    // index of the active destination (0..2 over the three nav icons)
+    // index of the active destination (0..2 over the three nav icons, 3 menu)
     property int currentIndex: 0
     signal activated(int index)
 
@@ -26,7 +26,7 @@ Rectangle {
     Column {
         id: clock
         anchors.top: parent.top
-        anchors.topMargin: 26
+        anchors.topMargin: 24
         anchors.horizontalCenter: parent.horizontalCenter
         spacing: -4
 
@@ -35,7 +35,7 @@ Rectangle {
             text: rail.hours
             color: "#FFFFFF"
             font.family: Theme.typography.family
-            font.pixelSize: Theme.typography.displayTime
+            font.pixelSize: 22
             font.weight: Theme.typography.weightMedium
         }
         Text {
@@ -43,7 +43,7 @@ Rectangle {
             text: rail.minutes
             color: "#FFFFFF"
             font.family: Theme.typography.family
-            font.pixelSize: Theme.typography.displayTime
+            font.pixelSize: 22
             font.weight: Theme.typography.weightMedium
         }
     }
@@ -52,8 +52,8 @@ Rectangle {
     Column {
         id: nav
         anchors.centerIn: parent
-        anchors.verticalCenterOffset: 18
-        spacing: 34
+        anchors.verticalCenterOffset: 10
+        spacing: 46
 
         Repeater {
             model: [
@@ -65,13 +65,13 @@ Rectangle {
                 id: cell
                 required property int index
                 required property var modelData
-                width: 44
-                height: 44
+                width: 40
+                height: 40
 
                 AppIcon {
                     anchors.centerIn: parent
                     source: cell.modelData.icon
-                    size: 26
+                    size: 24
                     color: rail.currentIndex === cell.index
                            ? "#FFFFFF" : Theme.colors.iconMuted
                 }
@@ -88,12 +88,34 @@ Rectangle {
     }
 
     // Menu pinned to the bottom
-    AppIcon {
+    Item {
+        id: menuCell
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 26
         anchors.horizontalCenter: parent.horizontalCenter
-        source: Icons.menu
-        size: 26
-        color: "#FFFFFF"
+        width: 40
+        height: 40
+        scale: menuMouse.pressed ? 0.92 : 1.0
+
+        AppIcon {
+            anchors.centerIn: parent
+            source: Icons.menu
+            size: 24
+            color: rail.currentIndex === 3 ? "#FFFFFF" : Theme.colors.iconMuted
+        }
+
+        MouseArea {
+            id: menuMouse
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            onClicked: {
+                rail.currentIndex = 3
+                rail.activated(3)
+            }
+        }
+
+        Behavior on scale {
+            NumberAnimation { duration: Theme.motion.fast; easing.type: Easing.OutCubic }
+        }
     }
 }

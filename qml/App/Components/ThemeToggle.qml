@@ -12,6 +12,8 @@ Surface {
 
     implicitWidth: 56
     implicitHeight: 36
+    width: implicitWidth
+    height: implicitHeight
     radius: height / 2
     color: Theme.colors.tile
     neomorph: true

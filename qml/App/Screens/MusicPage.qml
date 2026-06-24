@@ -5,6 +5,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls.Basic as Basic
+import QtQuick.Effects
 import App.Theme
 import App.Icons
 import App.Components
@@ -166,69 +167,84 @@ Item {
                         // Featured "Daily Recommended"
                         Surface {
                             width: 372; height: 220
-                            radius: Theme.metrics.cardRadius
+                            radius: 8
                             elevated: true
                             color: "#0E1424"
-                            clip: true
 
-                            Image {
-                                anchors.right: parent.right
-                                anchors.top: parent.top
-                                anchors.bottom: parent.bottom
-                                width: parent.height
-                                source: Icons.albumCover
-                                fillMode: Image.PreserveAspectCrop
-                                smooth: true; mipmap: true
-                            }
-                            // left fade for legibility
                             Rectangle {
+                                id: featuredMask
                                 anchors.fill: parent
-                                gradient: Gradient {
-                                    orientation: Gradient.Horizontal
-                                    GradientStop { position: 0.0; color: "#0E1424" }
-                                    GradientStop { position: 0.55; color: "#000E1424" }
-                                }
+                                radius: 8
+                                visible: false
+                                layer.enabled: true
                             }
-                            Row {
-                                anchors.left: parent.left
-                                anchors.top: parent.top
-                                anchors.margins: 22
-                                spacing: 8
-                                Text {
-                                    text: "29"; color: "#FFFFFF"
-                                    font.family: Theme.typography.family
-                                    font.pixelSize: 40; font.weight: Theme.typography.weightBold
+
+                            Item {
+                                anchors.fill: parent
+                                layer.enabled: true
+                                layer.effect: MultiEffect {
+                                    maskEnabled: true
+                                    maskSource: featuredMask
                                 }
-                                Text {
-                                    anchors.top: parent.top; anchors.topMargin: 4
-                                    text: "JUN"; color: "#FFFFFF"
-                                    font.family: Theme.typography.family
-                                    font.pixelSize: 16; font.weight: Theme.typography.weightMedium
+
+                                Image {
+                                    anchors.right: parent.right
+                                    anchors.top: parent.top
+                                    anchors.bottom: parent.bottom
+                                    width: parent.height
+                                    source: Icons.albumCover
+                                    fillMode: Image.PreserveAspectCrop
+                                    smooth: true; mipmap: true
                                 }
-                            }
-                            Row {
-                                anchors.left: parent.left
-                                anchors.bottom: parent.bottom
-                                anchors.margins: 22
-                                spacing: 12
+                                // left fade for legibility
                                 Rectangle {
-                                    width: 42; height: 42; radius: 21
-                                    color: "transparent"
-                                    border.width: 2; border.color: "#FFFFFF"
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    AppIcon {
-                                        anchors.centerIn: parent
-                                        anchors.horizontalCenterOffset: 2
-                                        source: Icons.play; size: 18; color: "#FFFFFF"
+                                    anchors.fill: parent
+                                    gradient: Gradient {
+                                        orientation: Gradient.Horizontal
+                                        GradientStop { position: 0.0; color: "#0E1424" }
+                                        GradientStop { position: 0.55; color: "#000E1424" }
                                     }
                                 }
-                                Text {
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    text: "Daily\nRecommended"
-                                    color: "#FFFFFF"
-                                    font.family: Theme.typography.family
-                                    font.pixelSize: Theme.typography.caption
-                                    lineHeight: 1.1
+                                Row {
+                                    anchors.left: parent.left
+                                    anchors.top: parent.top
+                                    anchors.margins: 22
+                                    spacing: 8
+                                    Text {
+                                        text: "29"; color: "#FFFFFF"
+                                        font.family: Theme.typography.family
+                                        font.pixelSize: 40; font.weight: Theme.typography.weightBold
+                                    }
+                                    Text {
+                                        anchors.top: parent.top; anchors.topMargin: 4
+                                        text: "JUN"; color: "#FFFFFF"
+                                        font.family: Theme.typography.family
+                                        font.pixelSize: 16; font.weight: Theme.typography.weightMedium
+                                    }
+                                }
+                                Row {
+                                    anchors.left: parent.left
+                                    anchors.bottom: parent.bottom
+                                    anchors.margins: 22
+                                    spacing: 12
+                                    Rectangle {
+                                        width: 42; height: 42; radius: 21
+                                        color: "transparent"
+                                        border.width: 2; border.color: "#FFFFFF"
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        AppIcon {
+                                            anchors.centerIn: parent
+                                            source: Icons.play; size: 18; color: "#FFFFFF"
+                                        }
+                                    }
+                                    Text {
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        text: "Daily\nRecommended"
+                                        color: "#FFFFFF"
+                                        font.family: Theme.typography.family
+                                        font.pixelSize: Theme.typography.caption
+                                        lineHeight: 1.1
+                                    }
                                 }
                             }
                             MouseArea {
@@ -317,18 +333,30 @@ Item {
         }
 
         // ================= Now-playing detail =================
-        Item {
+        Basic.Page {
             id: detail
-            Item {
-                anchors.fill: parent
-                anchors.margins: Theme.metrics.paddingLg
+            padding: Theme.metrics.paddingLg
+            background: Item {}
 
-                RowLayout {
-                    id: dTop
+            header: Basic.Control {
+                topPadding: 20
+                bottomPadding: 20
+                leftPadding: 30
+                rightPadding: 30
+
+                Rectangle {
+                    id: dDivider
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    anchors.top: parent.top
-                    height: 52
+                    anchors.leftMargin: 20
+                    anchors.rightMargin: 20
+                    anchors.bottom: parent.bottom
+                    height: 1
+                    color: Theme.colors.divider
+                }
+
+                contentItem: RowLayout {
+                    id: dTop
                     spacing: 16
 
                     AppIcon {
@@ -339,9 +367,10 @@ Item {
                             onClicked: page.controller.musicDetailOpen = false
                         }
                     }
+
                     ColumnLayout {
-                        Layout.fillWidth: true
                         spacing: 0
+
                         Text {
                             text: page.controller.trackTitle
                             color: Theme.colors.textPrimary
@@ -349,6 +378,7 @@ Item {
                             font.pixelSize: Theme.typography.title
                             font.weight: Theme.typography.weightBold
                         }
+
                         Text {
                             text: page.controller.trackArtist
                             color: Theme.colors.textSecondary
@@ -356,126 +386,139 @@ Item {
                             font.pixelSize: Theme.typography.subtitle
                         }
                     }
-                    AppIcon { source: Icons.more; size: 22; color: Theme.colors.iconMuted }
-                }
 
-                Rectangle {
-                    id: dDivider
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.top: dTop.bottom
-                    anchors.topMargin: 10
-                    height: 1
-                    color: Theme.colors.divider
-                }
-
-                RowLayout {
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.top: dDivider.bottom
-                    anchors.bottom: parent.bottom
-                    anchors.topMargin: Theme.metrics.paddingMd
-                    spacing: Theme.metrics.spacing
-
-                    // left: controls + progress + transport
-                    ColumnLayout {
+                    Item {
                         Layout.fillWidth: true
-                        Layout.fillHeight: true
-                        spacing: 0
-
-                        RowLayout {
-                            spacing: 40
-                            AppIcon {
-                                source: Icons.heartOutline; size: 26
-                                color: page.controller.liked ? Theme.colors.danger : Theme.colors.icon
-                                MouseArea { anchors.fill: parent; anchors.margins: -8
-                                    cursorShape: Qt.PointingHandCursor
-                                    onClicked: page.controller.liked = !page.controller.liked }
-                            }
-                            AppIcon {
-                                source: Icons.repeat; size: 26
-                                color: page.controller.repeatOn ? Theme.colors.accent : Theme.colors.icon
-                                MouseArea { anchors.fill: parent; anchors.margins: -8
-                                    cursorShape: Qt.PointingHandCursor
-                                    onClicked: page.controller.repeatOn = !page.controller.repeatOn }
-                            }
-                            AppIcon { source: Icons.queue; size: 26; color: Theme.colors.icon }
-                            AppIcon { source: Icons.volume; size: 26; color: Theme.colors.icon }
-                        }
-
-                        Item { Layout.fillHeight: true; Layout.preferredHeight: 1 }
-
-                        // progress
-                        Basic.Slider {
-                            id: progress
-                            Layout.fillWidth: true
-                            from: 0; to: 1
-                            value: page.controller.trackProgress
-                            onMoved: page.controller.trackProgress = value
-                            background: Rectangle {
-                                x: progress.leftPadding
-                                y: progress.topPadding + progress.availableHeight / 2 - height / 2
-                                width: progress.availableWidth
-                                height: 4
-                                radius: 2
-                                color: Theme.colors.sliderTrack
-                                Rectangle {
-                                    width: progress.visualPosition * parent.width
-                                    height: parent.height
-                                    radius: parent.radius
-                                    color: Theme.colors.textPrimary
-                                }
-                            }
-                            handle: Rectangle {
-                                x: progress.leftPadding + progress.visualPosition * (progress.availableWidth - width)
-                                y: progress.topPadding + progress.availableHeight / 2 - height / 2
-                                width: 16; height: 16; radius: 8
-                                color: Theme.colors.textPrimary
-                            }
-                        }
-                        RowLayout {
-                            Layout.fillWidth: true
-                            Layout.topMargin: 8
-                            Text {
-                                text: page.controller.trackElapsed
-                                color: Theme.colors.textSecondary
-                                font.family: Theme.typography.family
-                                font.pixelSize: Theme.typography.caption
-                            }
-                            Item { Layout.fillWidth: true }
-                            Text {
-                                text: page.controller.trackDuration
-                                color: Theme.colors.textSecondary
-                                font.family: Theme.typography.family
-                                font.pixelSize: Theme.typography.caption
-                            }
-                        }
-
-                        Item { Layout.fillHeight: true; Layout.preferredHeight: 1 }
-
-                        // big transport
-                        RowLayout {
-                            spacing: 28
-                            IconButton { diameter: 78; checkable: false; iconSource: Icons.previous; iconSize: 28 }
-                            IconButton {
-                                diameter: 78; checkable: false
-                                iconSource: page.controller.playing ? Icons.pause : Icons.play
-                                iconSize: 32
-                                onClicked: page.controller.playing = !page.controller.playing
-                            }
-                            IconButton { diameter: 78; checkable: false; iconSource: Icons.next; iconSize: 28 }
-                        }
-
-                        Item { Layout.fillHeight: true; Layout.preferredHeight: 1 }
                     }
 
-                    // right: album art (square)
+                    AppIcon { source: Icons.more; size: 22; color: Theme.colors.iconMuted }
+                }
+            }
+
+            contentItem: RowLayout {
+                spacing: Theme.metrics.spacing
+
+                // left: controls + progress + transport
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    spacing: 0
+
+                    RowLayout {
+                        spacing: 40
+                        AppIcon {
+                            source: Icons.heartOutline; size: 26
+                            color: page.controller.liked ? Theme.colors.danger : Theme.colors.icon
+                            MouseArea { anchors.fill: parent; anchors.margins: -8
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: page.controller.liked = !page.controller.liked }
+                        }
+                        AppIcon {
+                            source: Icons.repeat; size: 26
+                            color: page.controller.repeatOn ? Theme.colors.accent : Theme.colors.icon
+                            MouseArea { anchors.fill: parent; anchors.margins: -8
+                                cursorShape: Qt.PointingHandCursor
+                                onClicked: page.controller.repeatOn = !page.controller.repeatOn }
+                        }
+                        AppIcon { source: Icons.queue; size: 26; color: Theme.colors.icon }
+                        AppIcon { source: Icons.volume; size: 26; color: Theme.colors.icon }
+                    }
+
+                    Item { Layout.fillHeight: true; Layout.preferredHeight: 1 }
+
+                    // progress
+                    Basic.Slider {
+                        id: progress
+                        Layout.fillWidth: true
+                        from: 0; to: 1
+                        value: page.controller.trackProgress
+                        onMoved: page.controller.trackProgress = value
+                        background: Rectangle {
+                            x: progress.leftPadding
+                            y: progress.topPadding + progress.availableHeight / 2 - height / 2
+                            width: progress.availableWidth
+                            height: 5
+                            radius: height / 2
+                            color: Theme.colors.sliderTrack
+                            Rectangle {
+                                width: progress.visualPosition * parent.width
+                                height: parent.height
+                                radius: parent.radius
+                                color: Theme.colors.textPrimary
+                            }
+                            Behavior on color {
+                                ColorAnimation { duration: Theme.motion.normal; easing.type: Easing.OutCubic }
+                            }
+                        }
+                        handle: Rectangle {
+                            x: progress.leftPadding + progress.visualPosition * (progress.availableWidth - width)
+                            y: progress.topPadding + progress.availableHeight / 2 - height / 2
+                            width: 16; height: 16; radius: 8
+                            color: Theme.colors.textPrimary
+                        }
+                    }
+                    RowLayout {
+                        Layout.fillWidth: true
+                        Layout.topMargin: 8
+                        Text {
+                            text: page.controller.trackElapsed
+                            color: Theme.colors.textSecondary
+                            font.family: Theme.typography.family
+                            font.pixelSize: Theme.typography.caption
+                        }
+                        Item { Layout.fillWidth: true }
+                        Text {
+                            text: page.controller.trackDuration
+                            color: Theme.colors.textSecondary
+                            font.family: Theme.typography.family
+                            font.pixelSize: Theme.typography.caption
+                        }
+                    }
+
+                    Item { Layout.fillHeight: true; Layout.preferredHeight: 1 }
+
+                    // big transport
+                    RowLayout {
+                        spacing: 28
+                        IconButton { diameter: 78; checkable: false; iconSource: Icons.previous; iconSize: 28 }
+                        IconButton {
+                            diameter: 78; checkable: false
+                            iconSource: page.controller.playing ? Icons.pause : Icons.play
+                            iconSize: 32
+                            onClicked: page.controller.playing = !page.controller.playing
+                        }
+                        IconButton { diameter: 78; checkable: false; iconSource: Icons.next; iconSize: 28 }
+                    }
+
+                    Item { Layout.fillHeight: true; Layout.preferredHeight: 1 }
+                }
+
+                // right: album art
+                Item {
+                    id: albumArtFrame
+                    Layout.preferredWidth: 322
+                    Layout.preferredHeight: 322
+                    Layout.alignment: Qt.AlignVCenter
+
+                    Rectangle {
+                        id: albumArtMask
+                        anchors.fill: parent
+                        radius: 8
+                        visible: false
+                        layer.enabled: true
+                    }
+
                     Image {
-                        Layout.fillHeight: true
-                        Layout.preferredWidth: height
+                        anchors.fill: parent
                         source: Icons.albumCover
-                        fillMode: Image.PreserveAspectFit
-                        smooth: true; mipmap: true
+                        fillMode: Image.PreserveAspectCrop
+                        smooth: true
+                        mipmap: true
+                        layer.enabled: true
+                        layer.effect: MultiEffect {
+                            maskEnabled: true
+                            maskSource: albumArtMask
+                        }
                     }
                 }
             }

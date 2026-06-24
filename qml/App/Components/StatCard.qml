@@ -16,23 +16,23 @@ Surface {
     radius: Theme.metrics.cardRadius
     neomorph: true
     color: Theme.colors.tile
-    implicitWidth: 190
-    implicitHeight: 112
+    implicitWidth: 240
+    implicitHeight: 136
 
     Column {
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.leftMargin: 22
-        anchors.rightMargin: 18
+        anchors.leftMargin: 28
+        anchors.rightMargin: 24
         anchors.verticalCenter: parent.verticalCenter
-        spacing: 8
+        spacing: 12
 
         Row {
-            spacing: 11
+            spacing: 16
             AppIcon {
                 anchors.verticalCenter: parent.verticalCenter
                 source: card.icon
-                size: 22
+                size: 24
                 color: card.accent
             }
             Text {
@@ -40,7 +40,7 @@ Surface {
                 text: card.value
                 color: Theme.colors.textPrimary
                 font.family: Theme.typography.family
-                font.pixelSize: 26
+                font.pixelSize: 31
                 font.weight: Theme.typography.weightBold
             }
         }
@@ -50,7 +50,7 @@ Surface {
             text: card.label
             color: Theme.colors.textSecondary
             font.family: Theme.typography.family
-            font.pixelSize: Theme.typography.caption
+            font.pixelSize: 17
         }
     }
 }

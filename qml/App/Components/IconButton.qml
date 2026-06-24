@@ -20,17 +20,19 @@ Item {
     property bool checkable: true
     property bool checked: false
     property color accentColor: Theme.colors.accent
-    property int diameter: 66
-    property int iconSize: Math.round(diameter * 0.42)
+    property int diameter: 70
+    property int iconSize: Math.round(diameter * 0.40)
 
     signal toggled(bool checked)
     signal clicked()
 
-    implicitWidth: diameter
-    implicitHeight: diameter
+    implicitWidth: Math.max(76, diameter)
+    implicitHeight: Math.max(76, diameter)
 
     Surface {
-        anchors.fill: parent
+        width: control.diameter
+        height: control.diameter
+        anchors.centerIn: parent
         radius: width / 2
         neomorph: true
         pressed: control.checked || mouse.pressed

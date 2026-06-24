@@ -5,12 +5,13 @@
 
 import QtQuick
 import QtQuick.Layouts
+import QtQuick.Controls.Basic
 import App.Theme
 import App.Icons
 import App.Components
 import App.Controllers
 
-Item {
+Page {
     id: page
 
     property SystemController controller
@@ -36,7 +37,7 @@ Item {
             text: lrow.label
             color: Theme.colors.textPrimary
             font.family: Theme.typography.family
-            font.pixelSize: Theme.typography.subtitle
+            font.pixelSize: 20
             font.weight: Theme.typography.weightMedium
         }
     }
@@ -62,30 +63,28 @@ Item {
             text: rrow.label
             color: Theme.colors.textPrimary
             font.family: Theme.typography.family
-            font.pixelSize: Theme.typography.subtitle
+            font.pixelSize: 20
             font.weight: Theme.typography.weightMedium
         }
     }
 
-    Item {
-        anchors.fill: parent
-        anchors.leftMargin: Theme.metrics.paddingLg
-        anchors.rightMargin: Theme.metrics.paddingLg
-        anchors.topMargin: Theme.metrics.paddingMd
-        anchors.bottomMargin: Theme.metrics.paddingLg
+    background: Item {}
+    padding: 20
+    topPadding: 0
+    leftPadding: 30
+    rightPadding: 30
 
-        // ---- Top: tabs + theme toggle ------------------------------------
-        Item {
-            id: topRow
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
-            height: 50
+    header: Control {
+        padding: 20
+        leftPadding: 30
+        rightPadding: 30
+
+        contentItem: RowLayout {
 
             NavTabBar {
                 id: tabs
-                anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
+                Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+                buttonWidth: 120
                 currentIndex: page.controller.controlTab
                 onCurrentIndexChanged: page.controller.controlTab = currentIndex
 
@@ -94,122 +93,114 @@ Item {
                 NavTabButton { text: "Setting" }
             }
 
-            ThemeToggle {
-                anchors.right: parent.right
-                anchors.verticalCenter: parent.verticalCenter
-            }
-        }
-
-        // ---- Tab content --------------------------------------------------
-        StackLayout {
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: topRow.bottom
-            anchors.bottom: parent.bottom
-            anchors.topMargin: Theme.metrics.paddingMd
-            currentIndex: tabs.currentIndex
-
-            // --- Control ---
             Item {
-                id: controlTab
+                Layout.fillWidth: true
+            }
 
-                ClimateBar {
-                    id: climate
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.bottom: parent.bottom
-                    leftTemp: page.controller.driverTemp
-                    rightTemp: page.controller.passengerTemp
-                    onLeftTempStep: (d) => page.controller.driverTemp =
-                                    Math.max(16, Math.min(30, page.controller.driverTemp + d))
-                    onRightTempStep: (d) => page.controller.passengerTemp =
-                                     Math.max(16, Math.min(30, page.controller.passengerTemp + d))
+            ThemeToggle {
+                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+            }
+        }
+    }
+
+    contentItem: StackLayout {
+        currentIndex: tabs.currentIndex
+
+        // --- Control ---
+        Page {
+            id: controlTab
+            background: Item {}
+            bottomPadding: 20
+
+            contentItem: Item {
+                id: middle
+
+                // central car (horizontal top view)
+                Image {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.verticalCenterOffset: -2
+                    width: Math.min(parent.width * 0.46, 560)
+                    height: width * 0.47
+                    source: Icons.carTopViewH
+                    fillMode: Image.PreserveAspectFit
+                    smooth: true
+                    mipmap: true
                 }
 
-                Item {
-                    id: middle
+                // left controls
+                ColumnLayout {
                     anchors.left: parent.left
+                    anchors.verticalCenter: parent.verticalCenter
+                    spacing: 20
+
+                    LeftRow {
+                        icon: Icons.lock
+                        label: "Central lock"
+                        accent: Theme.colors.accent
+                        active: page.controller.centralLock
+                        onToggled: (c) => page.controller.centralLock = c
+                    }
+                    LeftRow {
+                        icon: Icons.fuel
+                        label: "Fuel tank lock"
+                        active: page.controller.fuelTankLock
+                        onToggled: (c) => page.controller.fuelTankLock = c
+                    }
+                    LeftRow {
+                        icon: Icons.trunk
+                        label: "Trunk"
+                        active: page.controller.trunkOpen
+                        onToggled: (c) => page.controller.trunkOpen = c
+                    }
+                }
+
+                // right controls
+                ColumnLayout {
                     anchors.right: parent.right
-                    anchors.top: parent.top
-                    anchors.bottom: climate.top
-                    anchors.bottomMargin: Theme.metrics.paddingMd
+                    anchors.verticalCenter: parent.verticalCenter
+                    spacing: 20
 
-                    // central car (horizontal top view)
-                    Image {
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        width: Math.min(parent.width * 0.46, 580)
-                        height: width * 0.47
-                        source: Icons.carTopViewH
-                        fillMode: Image.PreserveAspectFit
-                        smooth: true
-                        mipmap: true
+                    RightRow {
+                        icon: Icons.infinity
+                        label: "Hybrid mode"
+                        accent: Theme.colors.success
+                        active: page.controller.hybridMode
+                        onToggled: (c) => page.controller.hybridMode = c
+                        Layout.alignment: Qt.AlignRight
                     }
-
-                    // left controls
-                    ColumnLayout {
-                        anchors.left: parent.left
-                        anchors.verticalCenter: parent.verticalCenter
-                        spacing: 26
-
-                        LeftRow {
-                            icon: Icons.lock
-                            label: "Central lock"
-                            accent: Theme.colors.accent
-                            active: page.controller.centralLock
-                            onToggled: (c) => page.controller.centralLock = c
-                        }
-                        LeftRow {
-                            icon: Icons.fuel
-                            label: "Fuel tank lock"
-                            active: page.controller.fuelTankLock
-                            onToggled: (c) => page.controller.fuelTankLock = c
-                        }
-                        LeftRow {
-                            icon: Icons.trunk
-                            label: "Trunk"
-                            active: page.controller.trunkOpen
-                            onToggled: (c) => page.controller.trunkOpen = c
-                        }
+                    RightRow {
+                        icon: Icons.bulb
+                        label: "Light control"
+                        active: page.controller.lightControl
+                        onToggled: (c) => page.controller.lightControl = c
+                        Layout.alignment: Qt.AlignRight
                     }
-
-                    // right controls
-                    ColumnLayout {
-                        anchors.right: parent.right
-                        anchors.verticalCenter: parent.verticalCenter
-                        spacing: 26
-
-                        RightRow {
-                            icon: Icons.infinity
-                            label: "Hybrid mode"
-                            accent: Theme.colors.success
-                            active: page.controller.hybridMode
-                            onToggled: (c) => page.controller.hybridMode = c
-                            Layout.alignment: Qt.AlignRight
-                        }
-                        RightRow {
-                            icon: Icons.bulb
-                            label: "Light control"
-                            active: page.controller.lightControl
-                            onToggled: (c) => page.controller.lightControl = c
-                            Layout.alignment: Qt.AlignRight
-                        }
-                        RightRow {
-                            icon: Icons.warning
-                            label: "Special road"
-                            active: page.controller.specialRoad
-                            onToggled: (c) => page.controller.specialRoad = c
-                            Layout.alignment: Qt.AlignRight
-                        }
+                    RightRow {
+                        icon: Icons.warning
+                        label: "Special road"
+                        active: page.controller.specialRoad
+                        onToggled: (c) => page.controller.specialRoad = c
+                        Layout.alignment: Qt.AlignRight
                     }
                 }
             }
 
-            // --- Energy ---
-            EnergyView { controller: page.controller }
-
-            // --- Setting ---
-            SettingsView { controller: page.controller }
+            footer: ClimateBar {
+                id: climate
+                leftTemp: page.controller.driverTemp
+                rightTemp: page.controller.passengerTemp
+                onLeftTempStep: (d) => page.controller.driverTemp =
+                                Math.max(16, Math.min(30, page.controller.driverTemp + d))
+                onRightTempStep: (d) => page.controller.passengerTemp =
+                                 Math.max(16, Math.min(30, page.controller.passengerTemp + d))
+            }
         }
+
+        // --- Energy ---
+        EnergyView { controller: page.controller }
+
+        // --- Setting ---
+        SettingsView { controller: page.controller }
     }
 }

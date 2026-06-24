@@ -32,15 +32,15 @@ QtObject {
     // ---- Dark palette -----------------------------------------------------
     readonly property QtObject _dark: QtObject {
         readonly property color background:     "#DBDBEA" // app canvas behind the panel
-        readonly property color surface:        "#2B2B31" // main control panel
-        readonly property color surfaceVariant: "#33333A"
-        readonly property color tile:           "#2B2B31" // == surface (neumorphic base)
+        readonly property color surface:        "#24252C" // main control panel
+        readonly property color surfaceVariant: "#30313A"
+        readonly property color tile:           "#24252C" // == surface (neumorphic base)
         readonly property color railBackground: "#0B0B0D" // left navigation rail
         readonly property color textPrimary:    "#FFFFFF"
-        readonly property color textSecondary:  "#B6B6C2"
+        readonly property color textSecondary:  "#B8B8C3"
         readonly property color icon:           "#FFFFFF"
         readonly property color iconMuted:      "#8A8A95"
-        readonly property color sliderTrack:    "#26262B" // recessed groove
+        readonly property color sliderTrack:    "#3A3B45" // inactive slider / recessed groove
         readonly property color handle:         "#2B2B31"
         readonly property color divider:        "#3A3A41"
         readonly property color shadow:         Qt.rgba(0, 0, 0, 0.55)
@@ -99,7 +99,7 @@ QtObject {
     readonly property QtObject typography: QtObject {
         readonly property string family: Qt.application.font.family
         readonly property int displayTime: 30  // rail clock
-        readonly property int title:       34  // now-playing track
+        readonly property int title:       30  // page titles / now-playing track
         readonly property int subtitle:    18
         readonly property int status:      19  // status bar
         readonly property int label:       16  // toggle captions
@@ -111,13 +111,13 @@ QtObject {
 
     // ---- Metrics / spacing ------------------------------------------------
     readonly property QtObject metrics: QtObject {
-        readonly property int panelRadius: 30
+        readonly property int panelRadius: 28
         readonly property int tileRadius:  32
         readonly property int cardRadius:  22
         readonly property int tileWidth:   116
         readonly property int tileHeight:  74
         readonly property int iconSize:    26
-        readonly property int railWidth:   104
+        readonly property int railWidth:   72
         readonly property int sliderHeight: 46
         readonly property int sliderHandle: 56
         readonly property int spacing:     22

@@ -35,7 +35,7 @@ QtObject {
     property string network: "4G"
     property string time: "09:35"
     property string date: "Saturday | Jun 29"
-    property int navIndex: 0   // 0 nav, 1 music, 2 car
+    property int navIndex: 0   // 0 nav/home, 1 music, 2 car/control, 3 menu/infotainment
 
     // ---- Control page -----------------------------------------------------
     property bool centralLock: true

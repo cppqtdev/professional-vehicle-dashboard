@@ -1,12 +1,8 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-
-        <!-- Design system singletons -->
         <file>qml/App/Theme/Theme.qml</file>
         <file>qml/App/Icons/Icons.qml</file>
-
-        <!-- Reusable component module: App.Components -->
         <file>qml/App/Components/qmldir</file>
         <file>qml/App/Components/AppIcon.qml</file>
         <file>qml/App/Components/Surface.qml</file>
@@ -25,20 +21,14 @@
         <file>qml/App/Components/StatCard.qml</file>
         <file>qml/App/Components/EnergyView.qml</file>
         <file>qml/App/Components/SettingsView.qml</file>
-
-        <!-- State / view-models: App.Controllers -->
         <file>qml/App/Controllers/qmldir</file>
         <file>qml/App/Controllers/SystemController.qml</file>
-
-        <!-- Screens: App.Screens -->
         <file>qml/App/Screens/qmldir</file>
         <file>qml/App/Screens/AppShell.qml</file>
         <file>qml/App/Screens/HomePage.qml</file>
         <file>qml/App/Screens/MusicPage.qml</file>
         <file>qml/App/Screens/InfotainmentPage.qml</file>
         <file>qml/App/Screens/ControlPage.qml</file>
-
-        <!-- Icon assets (recoloured at runtime by AppIcon) -->
         <file>icons/signal.svg</file>
         <file>icons/cellular.svg</file>
         <file>icons/bluetooth.svg</file>
@@ -93,10 +83,9 @@
         <file>icons/c-wave.svg</file>
         <file>icons/c-star.svg</file>
         <file>icons/c-discover.svg</file>
-
-        <!-- Illustrations -->
         <file>images/car_topview.svg</file>
         <file>images/car_topview_h.svg</file>
         <file>images/album_cover.svg</file>
+        <file>qml/App/Components/BottonTabButton.qml</file>
     </qresource>
 </RCC>
