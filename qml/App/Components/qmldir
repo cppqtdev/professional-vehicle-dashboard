@@ -17,3 +17,4 @@ SwitchControl 1.0 SwitchControl.qml
 StatCard 1.0 StatCard.qml
 EnergyView 1.0 EnergyView.qml
 SettingsView 1.0 SettingsView.qml
+WeatherTexture 1.0 WeatherTexture.qml

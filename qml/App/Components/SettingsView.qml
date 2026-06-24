@@ -7,12 +7,13 @@
 
 import QtQuick
 import QtQuick.Layouts
+import QtQuick.Controls
 import App.Theme
 import App.Icons
 import App.Components
 import App.Controllers
 
-Item {
+Control {
     id: view
     property SystemController controller
 
@@ -29,17 +30,17 @@ Item {
         radius: 20
         neomorph: true
         color: Theme.colors.tile
+        leftPadding: 22
+        rightPadding: 22
+        padding: 14
 
-        ColumnLayout {
-            anchors.fill: parent
-            anchors.leftMargin: 22
-            anchors.rightMargin: 22
-            anchors.topMargin: 14
-            anchors.bottomMargin: 14
+        contentItem: ColumnLayout {
             spacing: 6
+
             RowLayout {
                 spacing: 12
                 AppIcon { source: sc.icon; size: 22; color: Theme.colors.icon }
+
                 Text {
                     Layout.fillWidth: true
                     text: sc.label
@@ -49,6 +50,7 @@ Item {
                     font.weight: Theme.typography.weightMedium
                 }
             }
+
             ValueSlider {
                 Layout.fillWidth: true
                 value: sc.value
@@ -69,13 +71,15 @@ Item {
         radius: 18
         neomorph: true
         color: Theme.colors.tile
+        leftPadding: 22
+        rightPadding: 22
+        padding: 14
 
-        RowLayout {
-            anchors.fill: parent
-            anchors.leftMargin: 22
-            anchors.rightMargin: 22
+        contentItem: RowLayout {
             spacing: 14
+
             AppIcon { source: r.icon; size: 22; color: Theme.colors.icon }
+
             Text {
                 Layout.fillWidth: true
                 text: r.label
@@ -84,6 +88,7 @@ Item {
                 font.pixelSize: Theme.typography.subtitle
                 font.weight: Theme.typography.weightMedium
             }
+
             SwitchControl {
                 checked: r.value
                 onToggled: (c) => r.toggled(c)
@@ -99,13 +104,14 @@ Item {
         radius: 18
         neomorph: true
         color: Theme.colors.tile
+        leftPadding: 22
+        rightPadding: 22
+        padding: 14
 
-        RowLayout {
-            anchors.fill: parent
-            anchors.leftMargin: 22
-            anchors.rightMargin: 22
+        contentItem: RowLayout {
             spacing: 14
             AppIcon { source: vr.icon; size: 22; color: Theme.colors.icon }
+
             Text {
                 Layout.fillWidth: true
                 text: vr.label
@@ -124,80 +130,146 @@ Item {
     }
 
     // ---- Layout -----------------------------------------------------------
-    ColumnLayout {
+    contentItem: Flickable {
         anchors.fill: parent
-        spacing: 16
+        contentWidth: view.width
+        contentHeight: layout.height
+        clip: true
 
-        // sliders
-        RowLayout {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 112
-            spacing: Theme.metrics.spacing
-            SliderCard {
-                Layout.fillWidth: true; Layout.fillHeight: true
-                icon: Icons.brightness; label: "Display brightness"
-                fill: Theme.colors.accent; handleIcon: Icons.brightness
-                value: view.controller.brightness
-                onMoved: (v) => view.controller.brightness = v
-            }
-            SliderCard {
-                Layout.fillWidth: true; Layout.fillHeight: true
-                icon: Icons.volume; label: "Volume"
-                fill: Theme.colors.success; handleIcon: Icons.volume
-                value: view.controller.volume
-                onMoved: (v) => view.controller.volume = v
+        Control {
+            id: settingsContent
+            width: view.width
+            leftPadding: 30
+            rightPadding: 30
+            topPadding: 5
+            readonly property int tileGap: Theme.metrics.spacing
+            readonly property int tileWidth: Math.floor((availableWidth - tileGap) / 2)
+
+            contentItem: ColumnLayout {
+                id: layout
+                spacing: 16
+                width: settingsContent.availableWidth
+
+                // sliders
+                RowLayout {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 112
+                    spacing: settingsContent.tileGap
+
+                    SliderCard {
+                        Layout.preferredWidth: settingsContent.tileWidth
+                        Layout.minimumWidth: settingsContent.tileWidth
+                        Layout.maximumWidth: settingsContent.tileWidth
+                        Layout.fillHeight: true
+                        icon: Icons.brightness; label: "Display brightness"
+                        fill: Theme.colors.accent; handleIcon: Icons.brightness
+                        value: view.controller.brightness
+                        onMoved: (v) => view.controller.brightness = v
+                    }
+
+                    SliderCard {
+                        Layout.preferredWidth: settingsContent.tileWidth
+                        Layout.minimumWidth: settingsContent.tileWidth
+                        Layout.maximumWidth: settingsContent.tileWidth
+                        Layout.fillHeight: true
+                        icon: Icons.volume; label: "Volume"
+                        fill: Theme.colors.success; handleIcon: Icons.volume
+                        value: view.controller.volume
+                        onMoved: (v) => view.controller.volume = v
+                    }
+                }
+
+                // switches
+                GridLayout {
+                    Layout.fillWidth: true
+                    columns: 2
+                    rowSpacing: 16
+                    columnSpacing: settingsContent.tileGap
+
+                    SwitchRow {
+                        Layout.preferredWidth: settingsContent.tileWidth
+                        Layout.minimumWidth: settingsContent.tileWidth
+                        Layout.maximumWidth: settingsContent.tileWidth
+                        Layout.preferredHeight: 58
+                        icon: Theme.dark ? Icons.moon : Icons.sun
+                        label: "Dark theme"
+                        value: view.controller.darkTheme
+                        onToggled: (c) => appBackend.darkTheme = c
+                    }
+                    SwitchRow {
+                        Layout.preferredWidth: settingsContent.tileWidth
+                        Layout.minimumWidth: settingsContent.tileWidth
+                        Layout.maximumWidth: settingsContent.tileWidth
+                        Layout.preferredHeight: 58
+                        icon: Icons.wRain
+                        label: "Weather texture"
+                        value: view.controller.textureEnabled
+                        onToggled: (c) => appBackend.textureEnabled = c
+                    }
+                    SwitchRow {
+                        Layout.preferredWidth: settingsContent.tileWidth
+                        Layout.minimumWidth: settingsContent.tileWidth
+                        Layout.maximumWidth: settingsContent.tileWidth
+                        Layout.preferredHeight: 58
+                        icon: Icons.hotspot; label: "Wi-Fi"
+                        value: view.controller.wifiOn
+                        onToggled: (c) => appBackend.wifiOn = c
+                    }
+                    SwitchRow {
+                        Layout.preferredWidth: settingsContent.tileWidth
+                        Layout.minimumWidth: settingsContent.tileWidth
+                        Layout.maximumWidth: settingsContent.tileWidth
+                        Layout.preferredHeight: 58
+                        icon: Icons.lock; label: "Auto lock"
+                        value: view.controller.autoLock
+                        onToggled: (c) => appBackend.autoLock = c
+                    }
+                    SwitchRow {
+                        Layout.preferredWidth: settingsContent.tileWidth
+                        Layout.minimumWidth: settingsContent.tileWidth
+                        Layout.maximumWidth: settingsContent.tileWidth
+                        Layout.preferredHeight: 58
+                        icon: Icons.shield; label: "Driver assist"
+                        value: view.controller.driverAssist
+                        onToggled: (c) => appBackend.driverAssist = c
+                    }
+                    SwitchRow {
+                        Layout.preferredWidth: settingsContent.tileWidth
+                        Layout.minimumWidth: settingsContent.tileWidth
+                        Layout.maximumWidth: settingsContent.tileWidth
+                        Layout.preferredHeight: 58
+                        icon: Icons.leaf; label: "Eco mode"
+                        value: view.controller.ecoMode
+                        onToggled: (c) => appBackend.ecoMode = c
+                    }
+                }
+
+                // value rows
+                RowLayout {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 66
+                    spacing: settingsContent.tileGap
+
+                    ValueRow {
+                        Layout.preferredWidth: settingsContent.tileWidth
+                        Layout.minimumWidth: settingsContent.tileWidth
+                        Layout.maximumWidth: settingsContent.tileWidth
+                        Layout.fillHeight: true
+                        icon: Icons.globe; label: "Language"; value: view.controller.language
+                    }
+
+                    ValueRow {
+                        Layout.preferredWidth: settingsContent.tileWidth
+                        Layout.minimumWidth: settingsContent.tileWidth
+                        Layout.maximumWidth: settingsContent.tileWidth
+                        Layout.fillHeight: true
+                        icon: Icons.ruler; label: "Units"; value: view.controller.units
+                    }
+                }
+
+                // absorb remaining space so rows stay top-aligned
+                Item { Layout.fillWidth: true; Layout.preferredHeight: 20 }
             }
         }
-
-        // switches
-        GridLayout {
-            Layout.fillWidth: true
-            columns: 2
-            rowSpacing: 16
-            columnSpacing: Theme.metrics.spacing
-
-            SwitchRow {
-                Layout.fillWidth: true; Layout.preferredHeight: 58
-                icon: Icons.hotspot; label: "Wi-Fi"
-                value: view.controller.wifiOn
-                onToggled: (c) => view.controller.wifiOn = c
-            }
-            SwitchRow {
-                Layout.fillWidth: true; Layout.preferredHeight: 58
-                icon: Icons.lock; label: "Auto lock"
-                value: view.controller.autoLock
-                onToggled: (c) => view.controller.autoLock = c
-            }
-            SwitchRow {
-                Layout.fillWidth: true; Layout.preferredHeight: 58
-                icon: Icons.shield; label: "Driver assist"
-                value: view.controller.driverAssist
-                onToggled: (c) => view.controller.driverAssist = c
-            }
-            SwitchRow {
-                Layout.fillWidth: true; Layout.preferredHeight: 58
-                icon: Icons.leaf; label: "Eco mode"
-                value: view.controller.ecoMode
-                onToggled: (c) => view.controller.ecoMode = c
-            }
-        }
-
-        // value rows
-        RowLayout {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 66
-            spacing: Theme.metrics.spacing
-            ValueRow {
-                Layout.fillWidth: true; Layout.fillHeight: true
-                icon: Icons.globe; label: "Language"; value: view.controller.language
-            }
-            ValueRow {
-                Layout.fillWidth: true; Layout.fillHeight: true
-                icon: Icons.ruler; label: "Units"; value: view.controller.units
-            }
-        }
-
-        // absorb remaining space so rows stay top-aligned
-        Item { Layout.fillWidth: true; Layout.fillHeight: true }
     }
 }

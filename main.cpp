@@ -4,6 +4,8 @@
 #include <QtQml>
 #include <QUrl>
 
+#include "appbackend.h"
+
 int main(int argc, char *argv[])
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -12,6 +14,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
+    AppBackend appBackend;
 
     // Resolve App.* QML modules (Components, Screens, Controllers) shipped in
     // the resource tree, so QML can `import App.Components` instead of "../".
@@ -27,6 +30,8 @@ int main(int argc, char *argv[])
     qmlRegisterSingletonType(
         QUrl(QStringLiteral("qrc:/qml/App/Icons/Icons.qml")),
         "App.Icons", 1, 0, "Icons");
+
+    engine.rootContext()->setContextProperty(QStringLiteral("appBackend"), &appBackend);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(

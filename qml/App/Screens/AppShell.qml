@@ -19,6 +19,15 @@ Item {
     // Shared application state
     SystemController { id: system }
 
+    Component.onCompleted: Theme.dark = appBackend.darkTheme
+
+    Connections {
+        target: appBackend
+        function onSettingsChanged() {
+            Theme.dark = appBackend.darkTheme
+        }
+    }
+
     // Canvas
     Rectangle {
         anchors.fill: parent

@@ -1,4 +1,4 @@
-QT += quick quickcontrols2
+QT += quick quickcontrols2 network
 CONFIG += c++17
 
 # You can make your code fail to compile if it uses deprecated APIs.
@@ -6,7 +6,11 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        appbackend.cpp \
         main.cpp
+
+HEADERS += \
+        appbackend.h
 
 RESOURCES += qml.qrc
 

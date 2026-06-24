@@ -76,24 +76,10 @@ Item {
         Item {
             id: dashboard
 
-            // decorative faint rain
-            Item {
+            WeatherTexture {
                 anchors.fill: parent
-                clip: true
-                Repeater {
-                    model: 22
-                    delegate: Rectangle {
-                        required property int index
-                        width: 2
-                        height: 150
-                        radius: 1
-                        rotation: 20
-                        opacity: 0.05
-                        color: Theme.colors.textSecondary
-                        x: (index * 96) % (dashboard.width + 200) - 80
-                        y: ((index * 137) % (dashboard.height + 100)) - 60
-                    }
-                }
+                mode: page.controller.weatherTexture
+                visible: page.controller.textureEnabled
             }
 
             // left: clock + date + shortcuts
@@ -197,7 +183,7 @@ Item {
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: 6
                         width: 116; height: 116
-                        source: Icons.wStorm
+                        source: page.wIcon(page.controller.weatherIcon)
                         fillMode: Image.PreserveAspectFit
                         smooth: true; mipmap: true
                     }
@@ -214,6 +200,13 @@ Item {
         // ================= 5-day detail =================
         Item {
             id: detail
+
+            WeatherTexture {
+                anchors.fill: parent
+                mode: page.controller.weatherTexture
+                visible: page.controller.textureEnabled
+                opacity: Theme.dark ? 0.32 : 0.12
+            }
 
             // top bar
             RowLayout {
@@ -287,7 +280,7 @@ Item {
                     anchors.top: currentWeather.bottom
                     anchors.topMargin: 30
                     width: 118; height: 118
-                    source: Icons.wStorm
+                    source: page.wIcon(page.controller.weatherIcon)
                     fillMode: Image.PreserveAspectFit
                     smooth: true; mipmap: true
                 }

@@ -3,18 +3,23 @@
 // Used as the "Energy" tab of the Control screen.
 
 import QtQuick
+import QtQuick.Controls
 import QtQuick.Layouts
 import App.Theme
 import App.Icons
 import App.Components
 import App.Controllers
 
-Item {
+Control {
     id: view
     property SystemController controller
 
     RowLayout {
         anchors.fill: parent
+        anchors.leftMargin: 30
+        anchors.rightMargin: 30
+        anchors.topMargin: 10
+        anchors.bottomMargin: 20
         spacing: Theme.metrics.spacing
 
         // ---- Battery / range card ----------------------------------------

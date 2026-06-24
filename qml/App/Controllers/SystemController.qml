@@ -33,8 +33,8 @@ QtObject {
 
     // Status bar / rail
     property string network: "4G"
-    property string time: "09:35"
-    property string date: "Saturday | Jun 29"
+    property string time: appBackend.time
+    property string date: appBackend.date
     property int navIndex: 0   // 0 nav/home, 1 music, 2 car/control, 3 menu/infotainment
 
     // ---- Control page -----------------------------------------------------
@@ -57,27 +57,25 @@ QtObject {
     property bool charging: false
 
     // ---- Settings ---------------------------------------------------------
-    property bool wifiOn: true
-    property bool autoLock: true
-    property bool driverAssist: true
-    property bool ecoMode: false
+    property bool wifiOn: appBackend.wifiOn
+    property bool autoLock: appBackend.autoLock
+    property bool driverAssist: appBackend.driverAssist
+    property bool ecoMode: appBackend.ecoMode
+    property bool darkTheme: appBackend.darkTheme
+    property bool textureEnabled: appBackend.textureEnabled
     property string language: "English"
     property string units: "Metric"
 
     // ---- Home / weather ---------------------------------------------------
-    property string city: "Nanshan | Shenzhen"
-    property int weatherTemp: 35
-    property string weatherCondition: "Mostly Clear"
-    property int rainChance: 90
-    property int humidity: 75
+    property string city: appBackend.city
+    property int weatherTemp: appBackend.weatherTemp
+    property string weatherCondition: appBackend.weatherCondition
+    property int rainChance: appBackend.rainChance
+    property int humidity: appBackend.humidity
+    property string weatherIcon: appBackend.weatherIcon
+    property string weatherTexture: appBackend.weatherTexture
     property bool weatherDetailOpen: false
 
     // 5-day forecast (icon is one of Icons.w*)
-    property var forecast: [
-        { day: "27 SUN", icon: "wRain",   hi: 23, lo: 18, cond: "Showers",       rain: 90 },
-        { day: "28 MON", icon: "wPartly", hi: 26, lo: 20, cond: "Partly Cloudy", rain: 40 },
-        { day: "29 TUE", icon: "wSun",    hi: 35, lo: 27, cond: "Mostly Clear",  rain: 18 },
-        { day: "30 WED", icon: "wRain",   hi: 20, lo: 16, cond: "Rain",          rain: 86 },
-        { day: "1 FRI",  icon: "wStorm",  hi: 25, lo: 18, cond: "Mostly Clear",  rain: 72 }
-    ]
+    property var forecast: appBackend.forecast
 }

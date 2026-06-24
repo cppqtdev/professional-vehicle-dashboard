@@ -69,15 +69,13 @@ Page {
     }
 
     background: Item {}
-    padding: 20
-    topPadding: 0
-    leftPadding: 30
-    rightPadding: 30
+    padding: 0
 
     header: Control {
         padding: 20
         leftPadding: 30
         rightPadding: 30
+        bottomPadding: 0
 
         contentItem: RowLayout {
 
@@ -96,10 +94,6 @@ Page {
             Item {
                 Layout.fillWidth: true
             }
-
-            ThemeToggle {
-                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-            }
         }
     }
 
@@ -110,6 +104,9 @@ Page {
         Page {
             id: controlTab
             background: Item {}
+            leftPadding: 30
+            rightPadding: 30
+            topPadding: 20
             bottomPadding: 20
 
             contentItem: Item {
@@ -186,14 +183,17 @@ Page {
                 }
             }
 
-            footer: ClimateBar {
-                id: climate
-                leftTemp: page.controller.driverTemp
-                rightTemp: page.controller.passengerTemp
-                onLeftTempStep: (d) => page.controller.driverTemp =
-                                Math.max(16, Math.min(30, page.controller.driverTemp + d))
-                onRightTempStep: (d) => page.controller.passengerTemp =
-                                 Math.max(16, Math.min(30, page.controller.passengerTemp + d))
+            footer: Control {
+                bottomPadding: 20
+                contentItem: ClimateBar {
+                    id: climate
+                    leftTemp: page.controller.driverTemp
+                    rightTemp: page.controller.passengerTemp
+                    onLeftTempStep: (d) => page.controller.driverTemp =
+                                    Math.max(16, Math.min(30, page.controller.driverTemp + d))
+                    onRightTempStep: (d) => page.controller.passengerTemp =
+                                     Math.max(16, Math.min(30, page.controller.passengerTemp + d))
+                }
             }
         }
 

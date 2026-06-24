@@ -62,8 +62,5 @@ Item {
             font.pixelSize: Theme.typography.status
             font.weight: Theme.typography.weightMedium
         }
-        ThemeToggle {
-            anchors.verticalCenter: parent.verticalCenter
-        }
     }
 }

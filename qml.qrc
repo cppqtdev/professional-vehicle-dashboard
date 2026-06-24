@@ -21,6 +21,7 @@
         <file>qml/App/Components/StatCard.qml</file>
         <file>qml/App/Components/EnergyView.qml</file>
         <file>qml/App/Components/SettingsView.qml</file>
+        <file>qml/App/Components/WeatherTexture.qml</file>
         <file>qml/App/Controllers/qmldir</file>
         <file>qml/App/Controllers/SystemController.qml</file>
         <file>qml/App/Screens/qmldir</file>

@@ -30,6 +30,6 @@ Surface {
         id: toggleMouse
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
-        onClicked: Theme.toggle()
+        onClicked: appBackend.darkTheme = !Theme.dark
     }
 }
