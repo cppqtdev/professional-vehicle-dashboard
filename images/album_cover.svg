@@ -1,0 +1,29 @@
+<svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="disc" cx="0.5" cy="0.5" r="0.55">
+      <stop offset="0"    stop-color="#3FC6F0"/>
+      <stop offset="0.45" stop-color="#1E78C0"/>
+      <stop offset="0.8"  stop-color="#123A6E"/>
+      <stop offset="1"    stop-color="#0A1326"/>
+    </radialGradient>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0E1424"/><stop offset="1" stop-color="#05080F"/>
+    </linearGradient>
+    <clipPath id="round"><rect width="240" height="240" rx="22"/></clipPath>
+  </defs>
+  <g clip-path="url(#round)">
+    <rect width="240" height="240" fill="url(#bg)"/>
+    <g fill="none" stroke="#16223C" stroke-width="2">
+      <circle cx="120" cy="120" r="98"/><circle cx="120" cy="120" r="86"/><circle cx="120" cy="120" r="74"/>
+    </g>
+    <circle cx="120" cy="120" r="66" fill="url(#disc)"/>
+    <g stroke="#69D6F5" stroke-width="2.6" opacity="0.85">
+      <line x1="120" y1="58" x2="120" y2="76"/><line x1="120" y1="164" x2="120" y2="182"/>
+      <line x1="58" y1="120" x2="76" y2="120"/><line x1="164" y1="120" x2="182" y2="120"/>
+      <line x1="76" y1="76" x2="89" y2="89"/><line x1="151" y1="151" x2="164" y2="164"/>
+      <line x1="76" y1="164" x2="89" y2="151"/><line x1="151" y1="89" x2="164" y2="76"/>
+    </g>
+    <circle cx="120" cy="120" r="13" fill="#0A1326"/>
+    <circle cx="120" cy="120" r="3.6" fill="#69D6F5"/>
+  </g>
+</svg>

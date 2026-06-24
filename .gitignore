@@ -1,0 +1,5 @@
+# Build directory
+build/
+
+# Qt Creator user settings
+*.pro.user

@@ -1,0 +1,19 @@
+module App.Components
+
+AppIcon 1.0 AppIcon.qml
+Surface 1.0 Surface.qml
+ToggleTile 1.0 ToggleTile.qml
+ValueSlider 1.0 ValueSlider.qml
+TransportButton 1.0 TransportButton.qml
+NowPlayingCard 1.0 NowPlayingCard.qml
+SideRail 1.0 SideRail.qml
+StatusBar 1.0 StatusBar.qml
+ThemeToggle 1.0 ThemeToggle.qml
+IconButton 1.0 IconButton.qml
+NavTabBar 1.0 NavTabBar.qml
+NavTabButton 1.0 NavTabButton.qml
+ClimateBar 1.0 ClimateBar.qml
+SwitchControl 1.0 SwitchControl.qml
+StatCard 1.0 StatCard.qml
+EnergyView 1.0 EnergyView.qml
+SettingsView 1.0 SettingsView.qml

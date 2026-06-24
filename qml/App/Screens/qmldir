@@ -1,0 +1,7 @@
+module App.Screens
+
+AppShell 1.0 AppShell.qml
+HomePage 1.0 HomePage.qml
+MusicPage 1.0 MusicPage.qml
+InfotainmentPage 1.0 InfotainmentPage.qml
+ControlPage 1.0 ControlPage.qml

@@ -1,0 +1,102 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+
+        <!-- Design system singletons -->
+        <file>qml/App/Theme/Theme.qml</file>
+        <file>qml/App/Icons/Icons.qml</file>
+
+        <!-- Reusable component module: App.Components -->
+        <file>qml/App/Components/qmldir</file>
+        <file>qml/App/Components/AppIcon.qml</file>
+        <file>qml/App/Components/Surface.qml</file>
+        <file>qml/App/Components/ToggleTile.qml</file>
+        <file>qml/App/Components/ValueSlider.qml</file>
+        <file>qml/App/Components/TransportButton.qml</file>
+        <file>qml/App/Components/NowPlayingCard.qml</file>
+        <file>qml/App/Components/SideRail.qml</file>
+        <file>qml/App/Components/StatusBar.qml</file>
+        <file>qml/App/Components/ThemeToggle.qml</file>
+        <file>qml/App/Components/IconButton.qml</file>
+        <file>qml/App/Components/NavTabBar.qml</file>
+        <file>qml/App/Components/NavTabButton.qml</file>
+        <file>qml/App/Components/ClimateBar.qml</file>
+        <file>qml/App/Components/SwitchControl.qml</file>
+        <file>qml/App/Components/StatCard.qml</file>
+        <file>qml/App/Components/EnergyView.qml</file>
+        <file>qml/App/Components/SettingsView.qml</file>
+
+        <!-- State / view-models: App.Controllers -->
+        <file>qml/App/Controllers/qmldir</file>
+        <file>qml/App/Controllers/SystemController.qml</file>
+
+        <!-- Screens: App.Screens -->
+        <file>qml/App/Screens/qmldir</file>
+        <file>qml/App/Screens/AppShell.qml</file>
+        <file>qml/App/Screens/HomePage.qml</file>
+        <file>qml/App/Screens/MusicPage.qml</file>
+        <file>qml/App/Screens/InfotainmentPage.qml</file>
+        <file>qml/App/Screens/ControlPage.qml</file>
+
+        <!-- Icon assets (recoloured at runtime by AppIcon) -->
+        <file>icons/signal.svg</file>
+        <file>icons/cellular.svg</file>
+        <file>icons/bluetooth.svg</file>
+        <file>icons/bell-off.svg</file>
+        <file>icons/hotspot.svg</file>
+        <file>icons/volume.svg</file>
+        <file>icons/brightness.svg</file>
+        <file>icons/prev.svg</file>
+        <file>icons/play.svg</file>
+        <file>icons/pause.svg</file>
+        <file>icons/next.svg</file>
+        <file>icons/nav.svg</file>
+        <file>icons/music.svg</file>
+        <file>icons/car.svg</file>
+        <file>icons/menu.svg</file>
+        <file>icons/moon.svg</file>
+        <file>icons/lock.svg</file>
+        <file>icons/fuel.svg</file>
+        <file>icons/trunk.svg</file>
+        <file>icons/steering.svg</file>
+        <file>icons/seat.svg</file>
+        <file>icons/fan.svg</file>
+        <file>icons/defrost.svg</file>
+        <file>icons/infinity.svg</file>
+        <file>icons/bulb.svg</file>
+        <file>icons/warning.svg</file>
+        <file>icons/chevron-up.svg</file>
+        <file>icons/chevron-down.svg</file>
+        <file>icons/home.svg</file>
+        <file>icons/briefcase.svg</file>
+        <file>icons/arrow-left.svg</file>
+        <file>icons/dots.svg</file>
+        <file>icons/battery.svg</file>
+        <file>icons/bolt.svg</file>
+        <file>icons/leaf.svg</file>
+        <file>icons/road.svg</file>
+        <file>icons/globe.svg</file>
+        <file>icons/ruler.svg</file>
+        <file>icons/info.svg</file>
+        <file>icons/shield.svg</file>
+        <file>icons/w-sun.svg</file>
+        <file>icons/w-cloud.svg</file>
+        <file>icons/w-partly.svg</file>
+        <file>icons/w-rain.svg</file>
+        <file>icons/w-storm.svg</file>
+        <file>icons/search.svg</file>
+        <file>icons/heart-outline.svg</file>
+        <file>icons/repeat.svg</file>
+        <file>icons/queue.svg</file>
+        <file>icons/person.svg</file>
+        <file>icons/c-heart.svg</file>
+        <file>icons/c-wave.svg</file>
+        <file>icons/c-star.svg</file>
+        <file>icons/c-discover.svg</file>
+
+        <!-- Illustrations -->
+        <file>images/car_topview.svg</file>
+        <file>images/car_topview_h.svg</file>
+        <file>images/album_cover.svg</file>
+    </qresource>
+</RCC>
