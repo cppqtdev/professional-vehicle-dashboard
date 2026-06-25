@@ -5,6 +5,10 @@
 #include <QUrl>
 
 #include "appbackend.h"
+#include "climatecontroller.h"
+#include "mediacontroller.h"
+#include "quicksettingscontroller.h"
+#include "vehiclecontroller.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,6 +19,10 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
     AppBackend appBackend;
+    QuickSettingsController quickSettings;
+    MediaController mediaController;
+    VehicleController vehicleController;
+    ClimateController climateController;
 
     // Resolve App.* QML modules (Components, Screens, Controllers) shipped in
     // the resource tree, so QML can `import App.Components` instead of "../".
@@ -32,6 +40,10 @@ int main(int argc, char *argv[])
         "App.Icons", 1, 0, "Icons");
 
     engine.rootContext()->setContextProperty(QStringLiteral("appBackend"), &appBackend);
+    engine.rootContext()->setContextProperty(QStringLiteral("quickControls"), &quickSettings);
+    engine.rootContext()->setContextProperty(QStringLiteral("mediaControls"), &mediaController);
+    engine.rootContext()->setContextProperty(QStringLiteral("vehicleControls"), &vehicleController);
+    engine.rootContext()->setContextProperty(QStringLiteral("climateControls"), &climateController);
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(

@@ -12,7 +12,8 @@ Control {
     padding: 30
     topPadding: 20
     bottomPadding: 20
-    property int selectedProfile: 0
+    property int selectedProfile: controller.driverProfile === "Guest" ? 1
+                                  : controller.driverProfile === "Family" ? 2 : 0
 
     component StatCard: Control {
         id: card
@@ -131,9 +132,9 @@ Control {
                 Layout.fillHeight: true
                 spacing: Theme.metrics.spacing
 
-                ProfileCard { Layout.fillWidth: true; Layout.fillHeight: true; name: "Adesh"; detail: "Sport seat • Dark theme • Weather widget"; selected: page.selectedProfile === 0; onPicked: page.selectedProfile = 0 }
-                ProfileCard { Layout.fillWidth: true; Layout.fillHeight: true; name: "Guest"; detail: "Comfort seat • Light theme • Music widget"; selected: page.selectedProfile === 1; onPicked: page.selectedProfile = 1 }
-                ProfileCard { Layout.fillWidth: true; Layout.fillHeight: true; name: "Family"; detail: "Eco climate • Safety prompts • Nav widget"; selected: page.selectedProfile === 2; onPicked: page.selectedProfile = 2 }
+                ProfileCard { Layout.fillWidth: true; Layout.fillHeight: true; name: "Adesh"; detail: "Sport seat • Dark theme • Weather widget"; selected: page.selectedProfile === 0; onPicked: { page.selectedProfile = 0; appBackend.driverProfile = "Adesh" } }
+                ProfileCard { Layout.fillWidth: true; Layout.fillHeight: true; name: "Guest"; detail: "Comfort seat • Light theme • Music widget"; selected: page.selectedProfile === 1; onPicked: { page.selectedProfile = 1; appBackend.driverProfile = "Guest" } }
+                ProfileCard { Layout.fillWidth: true; Layout.fillHeight: true; name: "Family"; detail: "Eco climate • Safety prompts • Nav widget"; selected: page.selectedProfile === 2; onPicked: { page.selectedProfile = 2; appBackend.driverProfile = "Family" } }
             }
 
             GridLayout {
@@ -145,8 +146,8 @@ Control {
 
                 StatCard { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.seat; value: "Seat"; label: "Saved position 2"; accent: Theme.colors.accent }
                 StatCard { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.fan; value: "22°"; label: "Preferred cabin"; accent: Theme.colors.success }
-                StatCard { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.brightness; value: Theme.dark ? "Dark" : "Light"; label: "Theme mode"; accent: Theme.colors.accent }
-                StatCard { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.home; value: page.controller.homeWidget; label: "Home widget"; accent: Theme.colors.success }
+                StatCard { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.brightness; value: page.controller.themePreset; label: "Theme preset"; accent: Theme.colors.accent }
+                StatCard { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.home; value: page.controller.homeWidgets[0]; label: "Primary widget"; accent: Theme.colors.success }
             }
         }
     }

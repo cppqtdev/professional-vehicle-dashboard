@@ -17,6 +17,7 @@ Control {
         property string title
         property string value
         property color accent: Theme.colors.accent
+        signal clicked()
 
         padding: 18
 
@@ -24,6 +25,7 @@ Control {
             radius: Theme.metrics.cardRadius
             color: Theme.colors.tile
             neomorph: true
+            pressed: tileMouse.pressed
         }
 
         contentItem: RowLayout {
@@ -48,6 +50,13 @@ Control {
             Item {
                 Layout.fillWidth: true
             }
+        }
+
+        MouseArea {
+            id: tileMouse
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            onClicked: tile.clicked()
         }
     }
 
@@ -87,12 +96,12 @@ Control {
             columns: 2
             rowSpacing: Theme.metrics.spacing
             columnSpacing: Theme.metrics.spacing
-            StatusTile { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.lock; title: "Doors"; value: "All locked"; accent: Theme.colors.success }
-            StatusTile { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.trunk; title: "Trunk"; value: page.controller.trunkOpen ? "Open" : "Closed"; accent: page.controller.trunkOpen ? Theme.colors.danger : Theme.colors.success }
-            StatusTile { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.bulb; title: "Lights"; value: page.controller.lightControl ? "On" : "Auto"; accent: Theme.colors.accent }
-            StatusTile { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.warning; title: "Warnings"; value: "No critical alerts"; accent: Theme.colors.success }
-            StatusTile { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.road; title: "Tire pressure"; value: "36 / 36 / 35 / 36 PSI"; accent: Theme.colors.accent }
-            StatusTile { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.info; title: "Service"; value: "Due in 2,400 km"; accent: Theme.colors.iconMuted }
+            StatusTile { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.lock; title: "Doors"; value: page.controller.centralLock ? "All locked" : "Unlocked"; accent: page.controller.centralLock ? Theme.colors.success : Theme.colors.danger; onClicked: vehicleControls.toggleCentralLock() }
+            StatusTile { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.trunk; title: "Trunk"; value: page.controller.trunkOpen ? "Open" : "Closed"; accent: page.controller.trunkOpen ? Theme.colors.danger : Theme.colors.success; onClicked: vehicleControls.toggleTrunk() }
+            StatusTile { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.bulb; title: "Lights"; value: page.controller.lightControl ? "On" : "Auto"; accent: page.controller.lightControl ? Theme.colors.success : Theme.colors.accent; onClicked: vehicleControls.toggleLightControl() }
+            StatusTile { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.warning; title: "Warnings"; value: page.controller.windowsClosed ? "No critical alerts" : "Window open"; accent: page.controller.windowsClosed ? Theme.colors.success : Theme.colors.danger; onClicked: vehicleControls.windowsClosed = !vehicleControls.windowsClosed }
+            StatusTile { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.road; title: "Tire pressure"; value: page.controller.tirePressureWarning >= 0 ? "Check tire " + (page.controller.tirePressureWarning + 1) : "36 / 36 / 35 / 36 PSI"; accent: page.controller.tirePressureWarning >= 0 ? Theme.colors.danger : Theme.colors.accent; onClicked: vehicleControls.tirePressureWarning = page.controller.tirePressureWarning >= 0 ? -1 : 2 }
+            StatusTile { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.info; title: "Service"; value: page.controller.vehicleMoving ? "Inspect after trip" : "Due in 2,400 km"; accent: Theme.colors.iconMuted; onClicked: vehicleControls.vehicleMoving = !vehicleControls.vehicleMoving }
         }
     }
 }

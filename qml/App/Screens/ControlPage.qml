@@ -37,8 +37,8 @@ Page {
             text: lrow.label
             color: Theme.colors.textPrimary
             font.family: Theme.typography.family
-            font.pixelSize: 20
-            font.weight: Theme.typography.weightMedium
+            font.pixelSize: 16
+            font.weight: Font.DemiBold
         }
     }
 
@@ -63,8 +63,8 @@ Page {
             text: rrow.label
             color: Theme.colors.textPrimary
             font.family: Theme.typography.family
-            font.pixelSize: 20
-            font.weight: Theme.typography.weightMedium
+            font.pixelSize: 16
+            font.weight: Font.DemiBold
         }
     }
 
@@ -84,7 +84,7 @@ Page {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                 buttonWidth: 120
                 currentIndex: page.controller.controlTab
-                onCurrentIndexChanged: page.controller.controlTab = currentIndex
+                onCurrentIndexChanged: vehicleControls.controlTab = currentIndex
 
                 NavTabButton { text: "Control" }
                 NavTabButton { text: "Energy" }
@@ -136,19 +136,19 @@ Page {
                         label: "Central lock"
                         accent: Theme.colors.accent
                         active: page.controller.centralLock
-                        onToggled: (c) => page.controller.centralLock = c
+                        onToggled: (c) => vehicleControls.centralLock = c
                     }
                     LeftRow {
                         icon: Icons.fuel
                         label: "Fuel tank lock"
                         active: page.controller.fuelTankLock
-                        onToggled: (c) => page.controller.fuelTankLock = c
+                        onToggled: (c) => vehicleControls.fuelTankLock = c
                     }
                     LeftRow {
                         icon: Icons.trunk
                         label: "Trunk"
                         active: page.controller.trunkOpen
-                        onToggled: (c) => page.controller.trunkOpen = c
+                        onToggled: (c) => vehicleControls.trunkOpen = c
                     }
                 }
 
@@ -163,21 +163,21 @@ Page {
                         label: "Hybrid mode"
                         accent: Theme.colors.success
                         active: page.controller.hybridMode
-                        onToggled: (c) => page.controller.hybridMode = c
+                        onToggled: (c) => vehicleControls.hybridMode = c
                         Layout.alignment: Qt.AlignRight
                     }
                     RightRow {
                         icon: Icons.bulb
                         label: "Light control"
                         active: page.controller.lightControl
-                        onToggled: (c) => page.controller.lightControl = c
+                        onToggled: (c) => vehicleControls.lightControl = c
                         Layout.alignment: Qt.AlignRight
                     }
                     RightRow {
                         icon: Icons.warning
                         label: "Special road"
                         active: page.controller.specialRoad
-                        onToggled: (c) => page.controller.specialRoad = c
+                        onToggled: (c) => vehicleControls.specialRoad = c
                         Layout.alignment: Qt.AlignRight
                     }
                 }
@@ -185,14 +185,14 @@ Page {
 
             footer: Control {
                 bottomPadding: 20
+                leftPadding: 20
+                rightPadding: 20
                 contentItem: ClimateBar {
                     id: climate
                     leftTemp: page.controller.driverTemp
                     rightTemp: page.controller.passengerTemp
-                    onLeftTempStep: (d) => page.controller.driverTemp =
-                                    Math.max(16, Math.min(30, page.controller.driverTemp + d))
-                    onRightTempStep: (d) => page.controller.passengerTemp =
-                                     Math.max(16, Math.min(30, page.controller.passengerTemp + d))
+                    onLeftTempStep: (d) => climateControls.stepDriverTemp(d)
+                    onRightTempStep: (d) => climateControls.stepPassengerTemp(d)
                 }
             }
         }

@@ -15,6 +15,7 @@ Rectangle {
     property string minutes: "35"
     // index of the active destination (0..2 over the three nav icons, 3 menu)
     property int currentIndex: 0
+    property bool hasAlerts: true
     signal activated(int index)
 
     width: Theme.metrics.railWidth
@@ -48,41 +49,72 @@ Rectangle {
         }
     }
 
-    // Destinations
-    Column {
+    // Direct screen shortcuts
+    ListView {
         id: nav
-        anchors.centerIn: parent
-        anchors.verticalCenterOffset: 10
-        spacing: 46
+        anchors.top: clock.bottom
+        anchors.bottom: menuCell.top
+        anchors.topMargin: 34
+        anchors.bottomMargin: 28
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: 50
+        clip: true
+        spacing: 18
+        boundsBehavior: Flickable.StopAtBounds
+        flickableDirection: Flickable.VerticalFlick
 
-        Repeater {
-            model: [
-                { "icon": Icons.nav },
-                { "icon": Icons.music },
-                { "icon": Icons.car }
-            ]
-            delegate: Item {
-                id: cell
-                required property int index
-                required property var modelData
-                width: 40
-                height: 40
+        model: [
+            { "icon": Icons.nav, "target": 0 },
+            { "icon": Icons.music, "target": 1 },
+            { "icon": Icons.car, "target": 2 },
+            { "icon": Icons.cellular, "target": 4 },
+            { "icon": Icons.road, "target": 5 },
+            { "icon": Icons.fan, "target": 7 },
+            { "icon": Icons.notification, "target": 9 },
+            { "icon": Icons.moon, "target": 13 }
+        ]
 
-                AppIcon {
-                    anchors.centerIn: parent
-                    source: cell.modelData.icon
-                    size: 24
-                    color: rail.currentIndex === cell.index
-                           ? "#FFFFFF" : Theme.colors.iconMuted
+        delegate: Item {
+            id: cell
+            required property int index
+            required property var modelData
+            width: nav.width
+            height: 42
+            scale: navMouse.pressed ? 0.92 : 1.0
+
+            Surface {
+                anchors.centerIn: parent
+                width: 42
+                height: 42
+                radius: width / 2
+                color: "#242429"
+                elevated: true
+                shadowColor: Qt.rgba(0, 0, 0, 0.7)
+                shadowBlur: 0.8
+                shadowOffset: 5
+                opacity: rail.currentIndex === cell.modelData.target ? 1 : 0
+                Behavior on opacity { NumberAnimation { duration: Theme.motion.fast } }
+            }
+
+            AppIcon {
+                anchors.centerIn: parent
+                source: cell.modelData.icon
+                size: 23
+                color: rail.currentIndex === cell.modelData.target
+                       ? "#FFFFFF" : Theme.colors.iconMuted
+            }
+            MouseArea {
+                id: navMouse
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: {
+                    rail.currentIndex = cell.modelData.target
+                    rail.activated(cell.modelData.target)
                 }
-                MouseArea {
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    onClicked: {
-                        rail.currentIndex = cell.index
-                        rail.activated(cell.index)
-                    }
-                }
+            }
+
+            Behavior on scale {
+                NumberAnimation { duration: Theme.motion.fast; easing.type: Easing.OutCubic }
             }
         }
     }
@@ -102,6 +134,16 @@ Rectangle {
             source: Icons.menu
             size: 24
             color: rail.currentIndex === 3 ? "#FFFFFF" : Theme.colors.iconMuted
+        }
+
+        Rectangle {
+            anchors.right: parent.right
+            anchors.top: parent.top
+            width: 7
+            height: 7
+            radius: 3.5
+            color: Theme.colors.danger
+            visible: rail.hasAlerts
         }
 
         MouseArea {

@@ -231,7 +231,7 @@ Control {
                         icon: Icons.brightness; label: "Display brightness"
                         fill: Theme.colors.accent; handleIcon: Icons.brightness
                         value: view.controller.brightness
-                        onMoved: (v) => view.controller.brightness = v
+                        onMoved: (v) => quickControls.brightness = v
                     }
 
                     SliderCard {
@@ -242,7 +242,7 @@ Control {
                         icon: Icons.volume; label: "Volume"
                         fill: Theme.colors.success; handleIcon: Icons.volume
                         value: view.controller.volume
-                        onMoved: (v) => view.controller.volume = v
+                        onMoved: (v) => quickControls.volume = v
                     }
                 }
 

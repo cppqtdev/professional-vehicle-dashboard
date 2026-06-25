@@ -10,6 +10,25 @@ Control {
     id: page
     property SystemController controller
 
+    function noticeIcon(name) {
+        switch (name) {
+        case "battery": return Icons.battery
+        case "person": return Icons.person
+        case "lock": return Icons.lock
+        case "info": return Icons.info
+        default: return Icons.warning
+        }
+    }
+
+    function noticeAccent(name) {
+        switch (name) {
+        case "danger": return Theme.colors.danger
+        case "success": return Theme.colors.success
+        case "muted": return Theme.colors.iconMuted
+        default: return Theme.colors.accent
+        }
+    }
+
     component Notice: Control {
         id: notice
         property url icon
@@ -73,11 +92,19 @@ Control {
 
                 Text { text: "Notifications"; Layout.fillWidth: true;  color: Theme.colors.textPrimary; font.family: Theme.typography.family; font.pixelSize: 30; font.weight: Theme.typography.weightBold }
 
-                Notice { Layout.fillWidth: true; Layout.preferredHeight: 92; icon: Icons.warning; title: "Weather alert"; body: "Thunderstorm nearby. Route guidance will avoid flooded roads."; time: "Now"; accent: Theme.colors.danger }
-                Notice { Layout.fillWidth: true; Layout.preferredHeight: 92; icon: Icons.battery; title: "Charging suggestion"; body: "Battery projected at 22% on arrival. Add a charger stop?"; time: "2m"; accent: Theme.colors.accent }
-                Notice { Layout.fillWidth: true; Layout.preferredHeight: 92; icon: Icons.info; title: "Service reminder"; body: "Tire rotation and cabin filter due in 2,400 km."; time: "1h"; accent: Theme.colors.iconMuted }
-                Notice { Layout.fillWidth: true; Layout.preferredHeight: 92; icon: Icons.person; title: "Incoming call"; body: "Aarav Kapoor. Use steering controls or voice assistant to answer."; time: "4h"; accent: Theme.colors.success }
-                Notice { Layout.fillWidth: true; Layout.preferredHeight: 92; icon: Icons.lock; title: "Vehicle secured"; body: "Doors locked, windows closed, sentry mode active."; time: "Yesterday"; accent: Theme.colors.success }
+                Repeater {
+                    model: page.controller.notifications
+                    delegate: Notice {
+                        required property var modelData
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: 92
+                        icon: page.noticeIcon(modelData.icon)
+                        title: modelData.title
+                        body: modelData.body
+                        time: modelData.time
+                        accent: page.noticeAccent(modelData.accent)
+                    }
+                }
 
                 Item {
                     Layout.preferredHeight: 20

@@ -21,6 +21,7 @@ Control {
             radius: 18
             color: Theme.colors.tile
             neomorph: true
+            pressed: commandMouse.pressed
         }
 
         contentItem: RowLayout {
@@ -43,6 +44,13 @@ Control {
                 font.weight: Theme.typography.weightMedium
                 elide: Text.ElideRight
             }
+        }
+
+        MouseArea {
+            id: commandMouse
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            onClicked: appBackend.executeVoiceCommand(cmd.text)
         }
     }
 

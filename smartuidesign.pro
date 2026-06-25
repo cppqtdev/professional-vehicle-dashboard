@@ -7,10 +7,18 @@ CONFIG += c++17
 
 SOURCES += \
         appbackend.cpp \
-        main.cpp
+        climatecontroller.cpp \
+        main.cpp \
+        mediacontroller.cpp \
+        quicksettingscontroller.cpp \
+        vehiclecontroller.cpp
 
 HEADERS += \
-        appbackend.h
+        appbackend.h \
+        climatecontroller.h \
+        mediacontroller.h \
+        quicksettingscontroller.h \
+        vehiclecontroller.h
 
 RESOURCES += qml.qrc
 

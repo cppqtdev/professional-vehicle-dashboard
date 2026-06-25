@@ -54,28 +54,28 @@ Item {
                         iconSource: Icons.cellular
                         accentColor: Theme.colors.accent
                         checked: page.controller.cellularOn
-                        onToggled: (c) => page.controller.cellularOn = c
+                        onToggled: (c) => quickControls.cellularOn = c
                     }
                     ToggleTile {
                         text: "Bluetooth"
                         iconSource: Icons.bluetooth
                         accentColor: Theme.colors.accent
                         checked: page.controller.bluetoothOn
-                        onToggled: (c) => page.controller.bluetoothOn = c
+                        onToggled: (c) => quickControls.bluetoothOn = c
                     }
                     ToggleTile {
                         text: "Notification"
                         iconSource: Icons.notification
                         accentColor: Theme.colors.danger
                         checked: page.controller.notificationsMuted
-                        onToggled: (c) => page.controller.notificationsMuted = c
+                        onToggled: (c) => quickControls.notificationsMuted = c
                     }
                     ToggleTile {
                         text: "Hotspot"
                         iconSource: Icons.hotspot
                         accentColor: Theme.colors.accent
                         checked: page.controller.hotspotOn
-                        onToggled: (c) => page.controller.hotspotOn = c
+                        onToggled: (c) => quickControls.hotspotOn = c
                     }
                     Item { Layout.fillWidth: true }
                 }
@@ -87,7 +87,7 @@ Item {
                     value: page.controller.volume
                     fillColor: Theme.colors.success
                     handleIcon: Icons.volume
-                    onMoved: page.controller.volume = value
+                    onMoved: quickControls.volume = value
                 }
 
                 ValueSlider {
@@ -95,7 +95,7 @@ Item {
                     value: page.controller.brightness
                     fillColor: Theme.colors.accent
                     handleIcon: Icons.brightness
-                    onMoved: page.controller.brightness = value
+                    onMoved: quickControls.brightness = value
                 }
 
                 Item { Layout.fillHeight: true; Layout.preferredHeight: 1 }
@@ -108,7 +108,9 @@ Item {
                 artist: page.controller.trackArtist
                 playing: page.controller.playing
                 progress: page.controller.trackProgress
-                onToggled: page.controller.playing = playing
+                onToggled: mediaControls.playing = playing
+                onPrevious: mediaControls.previousTrack()
+                onNext: mediaControls.nextTrack()
             }
         }
     }

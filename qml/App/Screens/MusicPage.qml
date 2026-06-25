@@ -89,7 +89,7 @@ Item {
                         anchors.left: parent.left
                         anchors.verticalCenter: parent.verticalCenter
                         currentIndex: page.controller.musicTab
-                        onCurrentIndexChanged: page.controller.musicTab = currentIndex
+                        onCurrentIndexChanged: mediaControls.musicTab = currentIndex
                         NavTabButton { text: "Music";      tabWidth: 110 }
                         NavTabButton { text: "Podcasts";    tabWidth: 130 }
                         NavTabButton { text: "Audio Book";  tabWidth: 150 }
@@ -148,27 +148,30 @@ Item {
                 // ---- Flickable card row ----------------------------------
                 Flickable {
                     id: cardFlick
+                    readonly property int shadowPadding: 16
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: topRow.bottom
                     anchors.topMargin: Theme.metrics.spacing
-                    height: 220
+                    height: 220 + shadowPadding * 2
                     clip: true
-                    contentWidth: cardRow.width
+                    contentWidth: cardRow.width + shadowPadding * 2
                     contentHeight: height
                     flickableDirection: Flickable.HorizontalFlick
                     boundsBehavior: Flickable.StopAtBounds
 
                     Row {
                         id: cardRow
-                        height: parent.height
+                        x: cardFlick.shadowPadding
+                        y: cardFlick.shadowPadding
+                        height: 220
                         spacing: Theme.metrics.spacing
 
                         // Featured "Daily Recommended"
                         Surface {
                             width: 372; height: 220
                             radius: 8
-                            elevated: true
+                            neomorph: true
                             color: "#0E1424"
 
                             Rectangle {
@@ -250,29 +253,29 @@ Item {
                             MouseArea {
                                 anchors.fill: parent
                                 cursorShape: Qt.PointingHandCursor
-                                onClicked: page.controller.musicDetailOpen = true
+                                onClicked: mediaControls.selectSource("Daily Recommended")
                             }
                         }
 
                         CatCard {
                             title: "Favorite"; subtitle: "365 Songs"
                             art: Icons.cHeart; color: "#F3B0C6"; fg: "#3A1020"
-                            onClicked: page.controller.musicDetailOpen = true
+                            onClicked: mediaControls.selectSource(title)
                         }
                         CatCard {
                             title: "Radio"; subtitle: "Subtitle"
                             art: Icons.cWave; color: "#0C0C10"; fg: "#FFFFFF"
-                            onClicked: page.controller.musicDetailOpen = true
+                            onClicked: mediaControls.selectSource(title)
                         }
                         CatCard {
                             title: "Popular"; subtitle: "Top 100"
                             art: Icons.cStar; color: "#BFC0F2"; fg: "#1B1B3A"
-                            onClicked: page.controller.musicDetailOpen = true
+                            onClicked: mediaControls.selectSource(title)
                         }
                         CatCard {
                             title: "Discover"; subtitle: "Explore more"
                             art: Icons.cDiscover; color: "#9BA0AE"; fg: "#FFFFFF"
-                            onClicked: page.controller.musicDetailOpen = true
+                            onClicked: mediaControls.selectSource(title)
                         }
                     }
                 }
@@ -288,16 +291,18 @@ Item {
                     IconButton {
                         diameter: 56; checkable: false
                         iconSource: Icons.previous; iconSize: 22
+                        onClicked: mediaControls.previousTrack()
                     }
                     IconButton {
                         diameter: 56; checkable: false
                         iconSource: page.controller.playing ? Icons.pause : Icons.play
                         iconSize: 24
-                        onClicked: page.controller.playing = !page.controller.playing
+                        onClicked: mediaControls.playPause()
                     }
                     IconButton {
                         diameter: 56; checkable: false
                         iconSource: Icons.next; iconSize: 22
+                        onClicked: mediaControls.nextTrack()
                     }
 
                     ColumnLayout {
@@ -325,7 +330,7 @@ Item {
                         MouseArea {
                             anchors.fill: parent; anchors.margins: -10
                             cursorShape: Qt.PointingHandCursor
-                            onClicked: page.controller.musicDetailOpen = true
+                            onClicked: mediaControls.openDetail()
                         }
                     }
                 }
@@ -364,7 +369,7 @@ Item {
                         MouseArea {
                             anchors.fill: parent; anchors.margins: -10
                             cursorShape: Qt.PointingHandCursor
-                            onClicked: page.controller.musicDetailOpen = false
+                            onClicked: mediaControls.closeDetail()
                         }
                     }
 
@@ -411,14 +416,14 @@ Item {
                             color: page.controller.liked ? Theme.colors.danger : Theme.colors.icon
                             MouseArea { anchors.fill: parent; anchors.margins: -8
                                 cursorShape: Qt.PointingHandCursor
-                                onClicked: page.controller.liked = !page.controller.liked }
+                                onClicked: mediaControls.toggleLiked() }
                         }
                         AppIcon {
                             source: Icons.repeat; size: 26
                             color: page.controller.repeatOn ? Theme.colors.accent : Theme.colors.icon
                             MouseArea { anchors.fill: parent; anchors.margins: -8
                                 cursorShape: Qt.PointingHandCursor
-                                onClicked: page.controller.repeatOn = !page.controller.repeatOn }
+                                onClicked: mediaControls.toggleRepeat() }
                         }
                         AppIcon { source: Icons.queue; size: 26; color: Theme.colors.icon }
                         AppIcon { source: Icons.volume; size: 26; color: Theme.colors.icon }
@@ -432,7 +437,7 @@ Item {
                         Layout.fillWidth: true
                         from: 0; to: 1
                         value: page.controller.trackProgress
-                        onMoved: page.controller.trackProgress = value
+                        onMoved: mediaControls.trackProgress = value
                         background: Rectangle {
                             x: progress.leftPadding
                             y: progress.topPadding + progress.availableHeight / 2 - height / 2
@@ -480,14 +485,14 @@ Item {
                     // big transport
                     RowLayout {
                         spacing: 28
-                        IconButton { diameter: 78; checkable: false; iconSource: Icons.previous; iconSize: 28 }
+                        IconButton { diameter: 78; checkable: false; iconSource: Icons.previous; iconSize: 28; onClicked: mediaControls.previousTrack() }
                         IconButton {
                             diameter: 78; checkable: false
                             iconSource: page.controller.playing ? Icons.pause : Icons.play
                             iconSize: 32
-                            onClicked: page.controller.playing = !page.controller.playing
+                            onClicked: mediaControls.playPause()
                         }
-                        IconButton { diameter: 78; checkable: false; iconSource: Icons.next; iconSize: 28 }
+                        IconButton { diameter: 78; checkable: false; iconSource: Icons.next; iconSize: 28; onClicked: mediaControls.nextTrack() }
                     }
 
                     Item { Layout.fillHeight: true; Layout.preferredHeight: 1 }

@@ -14,6 +14,8 @@ import App.Controllers
 Control {
     id: page
     property SystemController controller
+    property int routeMode: 0
+    property bool guidanceActive: false
 
     component RouteChip: Control {
         id: chip
@@ -21,6 +23,7 @@ Control {
         property string title
         property string subtitle
         property bool active: false
+        signal clicked()
 
         padding: 18
         background: Surface {
@@ -70,6 +73,7 @@ Control {
             id: chipMouse
             anchors.fill: parent
             cursorShape: Qt.PointingHandCursor
+            onClicked: chip.clicked()
         }
     }
 
@@ -79,12 +83,14 @@ Control {
         property string title
         property string meta
         property color accent: Theme.colors.accent
+        signal clicked()
 
         padding: 18
         background: Surface {
             radius: 18
             color: Theme.colors.tile
             neomorph: true
+            pressed: placeMouse.pressed
         }
 
         contentItem: RowLayout {
@@ -120,6 +126,13 @@ Control {
             Item {
                 Layout.fillWidth: true
             }
+        }
+
+        MouseArea {
+            id: placeMouse
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            onClicked: place.clicked()
         }
     }
 
@@ -217,7 +230,7 @@ Control {
                             font.weight: Theme.typography.weightMedium
                         }
                         Text {
-                            text: "Turn right in 1.2 km"
+                            text: page.controller.routeInfo.nextTurn || "Turn right in 1.2 km"
                             color: Theme.colors.textSecondary
                             font.family: Theme.typography.family
                             font.pixelSize: Theme.typography.caption
@@ -236,8 +249,8 @@ Control {
                 anchors.margins: 20
 
                 spacing: 12
-                IconButton { diameter: 54; checkable: false; iconSource: Icons.search; iconSize: 24 }
-                IconButton { diameter: 54; checkable: false; iconSource: Icons.globe; iconSize: 24 }
+                IconButton { diameter: 54; checkable: false; iconSource: Icons.search; iconSize: 24; onClicked: appBackend.refreshRoute() }
+                IconButton { diameter: 54; checkable: false; iconSource: Icons.globe; iconSize: 24; onClicked: page.routeMode = (page.routeMode + 1) % 2 }
             }
         }
 
@@ -276,7 +289,7 @@ Control {
                                 Layout.fillWidth: true
                                 Text {
                                     Layout.fillWidth: true
-                                    text: "Home"
+                                    text: page.controller.routeInfo.destination || "Home"
                                     color: Theme.colors.textPrimary
                                     font.family: Theme.typography.family
                                     font.pixelSize: 28
@@ -287,7 +300,9 @@ Control {
                             }
 
                             Text {
-                                text: "ETA 00:35 • 7.8 km • Light traffic"
+                                text: "ETA " + (page.controller.routeInfo.eta || "00:35")
+                                      + " • " + (page.controller.routeInfo.distance || "7.8 km")
+                                      + " • " + (page.controller.routeInfo.traffic || "Light traffic")
                                 color: Theme.colors.textSecondary
                                 font.family: Theme.typography.family
                                 font.pixelSize: Theme.typography.caption
@@ -297,7 +312,7 @@ Control {
                                 spacing: 16
 
                                 Text {
-                                    text: "18 min"
+                                    text: page.controller.routeInfo.duration || "18 min"
                                     color: Theme.colors.textPrimary
                                     font.family: Theme.typography.family
                                     font.pixelSize: 32
@@ -317,8 +332,8 @@ Control {
                         Layout.fillWidth: true
                         Layout.preferredHeight: 70
                         spacing: 12
-                        RouteChip { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.nav; title: "Fastest"; subtitle: "18 min"; active: true }
-                        RouteChip { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.leaf; title: "Eco"; subtitle: "21 min" }
+                        RouteChip { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.nav; title: "Fastest"; subtitle: page.controller.routeInfo.duration || "18 min"; active: page.routeMode === 0; onClicked: page.routeMode = 0 }
+                        RouteChip { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.leaf; title: "Eco"; subtitle: "21 min"; active: page.routeMode === 1; onClicked: page.routeMode = 1 }
                     }
 
                     GridLayout {
@@ -328,10 +343,10 @@ Control {
                         rowSpacing: 12
                         columnSpacing: 12
 
-                        PlaceCard { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.bolt; title: "Chargers"; meta: "4 nearby"; accent: Theme.colors.accent }
-                        PlaceCard { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.car; title: "Parking"; meta: "2.1 km"; accent: Theme.colors.success }
-                        PlaceCard { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.warning; title: "Incidents"; meta: "1 delay"; accent: Theme.colors.danger }
-                        PlaceCard { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.road; title: "Tolls"; meta: "Avoid off"; accent: Theme.colors.iconMuted }
+                        PlaceCard { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.bolt; title: "Chargers"; meta: (page.controller.routeInfo.chargers || 4) + " nearby"; accent: Theme.colors.accent; onClicked: appBackend.refreshRoute() }
+                        PlaceCard { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.car; title: "Parking"; meta: page.controller.routeInfo.parking || "2.1 km"; accent: Theme.colors.success; onClicked: appBackend.refreshRoute() }
+                        PlaceCard { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.warning; title: "Incidents"; meta: page.guidanceActive ? "Monitoring" : "1 delay"; accent: Theme.colors.danger; onClicked: page.guidanceActive = !page.guidanceActive }
+                        PlaceCard { Layout.fillWidth: true; Layout.fillHeight: true; icon: Icons.road; title: "Tolls"; meta: page.routeMode === 1 ? "Avoid on" : "Avoid off"; accent: Theme.colors.iconMuted; onClicked: page.routeMode = page.routeMode === 1 ? 0 : 1 }
                     }
 
                     Control {
@@ -349,7 +364,7 @@ Control {
                         contentItem: RowLayout {
                             spacing: 16
 
-                            IconButton { diameter: 64; checkable: false; iconSource: Icons.play; iconSize: 28 }
+                            IconButton { diameter: 64; checkable: false; iconSource: page.guidanceActive ? Icons.pause : Icons.play; iconSize: 28; onClicked: page.guidanceActive = !page.guidanceActive }
 
                             Control {
                                 Layout.fillWidth: true
@@ -358,7 +373,7 @@ Control {
                                     spacing: 2
 
                                     Text {
-                                        text: "Start guidance"
+                                        text: page.guidanceActive ? "Guidance active" : "Start guidance"
                                         color: Theme.colors.textPrimary
                                         font.family: Theme.typography.family
                                         font.pixelSize: Theme.typography.subtitle

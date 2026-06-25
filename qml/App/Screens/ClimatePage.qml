@@ -19,6 +19,7 @@ Control {
         property string label
         property bool checked: false
         property color accent: Theme.colors.accent
+        signal toggled(bool checked)
 
         spacing: 10
 
@@ -28,6 +29,7 @@ Control {
             iconSource: action.icon
             checked: action.checked
             accentColor: action.accent
+            onToggled: (c) => action.toggled(c)
         }
 
         Text {
@@ -73,8 +75,8 @@ Control {
                         rightPadding: 0
                         leftTemp: page.controller.driverTemp
                         rightTemp: page.controller.passengerTemp
-                        onLeftTempStep: (d) => page.controller.driverTemp = Math.max(16, Math.min(30, page.controller.driverTemp + d))
-                        onRightTempStep: (d) => page.controller.passengerTemp = Math.max(16, Math.min(30, page.controller.passengerTemp + d))
+                        onLeftTempStep: (d) => climateControls.stepDriverTemp(d)
+                        onRightTempStep: (d) => climateControls.stepPassengerTemp(d)
                     }
 
                     RowLayout {
@@ -83,19 +85,43 @@ Control {
 
                         Item { Layout.fillWidth: true }
 
-                        ClimateAction { icon: Icons.seat; label: "Seat"; checked: true; accent: Theme.colors.success }
+                        ClimateAction {
+                            icon: Icons.seat
+                            label: "Seat"
+                            checked: climateControls.seatHeatOn
+                            accent: Theme.colors.success
+                            onToggled: (c) => climateControls.seatHeatOn = c
+                        }
 
                         Item { Layout.fillWidth: true }
 
-                        ClimateAction { icon: Icons.fan; label: "Fan"; checked: true; accent: Theme.colors.accent }
+                        ClimateAction {
+                            icon: Icons.fan
+                            label: "Fan"
+                            checked: climateControls.acOn
+                            accent: Theme.colors.accent
+                            onToggled: (c) => climateControls.acOn = c
+                        }
 
                         Item { Layout.fillWidth: true }
 
-                        ClimateAction { icon: Icons.defrost; label: "Defrost"; checked: false; accent: Theme.colors.danger }
+                        ClimateAction {
+                            icon: Icons.defrost
+                            label: "Defrost"
+                            checked: climateControls.defrostOn
+                            accent: Theme.colors.danger
+                            onToggled: (c) => climateControls.defrostOn = c
+                        }
 
                         Item { Layout.fillWidth: true }
 
-                        ClimateAction { icon: Icons.infinity; label: "Sync"; checked: false; accent: Theme.colors.accent }
+                        ClimateAction {
+                            icon: Icons.infinity
+                            label: "Sync"
+                            checked: climateControls.autoMode
+                            accent: Theme.colors.accent
+                            onToggled: (c) => climateControls.autoMode = c
+                        }
 
                         Item { Layout.fillWidth: true }
                     }
@@ -116,10 +142,24 @@ Control {
                 contentItem: ColumnLayout {
                     spacing: 18
                     Text { text: "Airflow"; color: Theme.colors.textPrimary; font.family: Theme.typography.family; font.pixelSize: 24; font.weight: Theme.typography.weightBold }
-                    ValueSlider { Layout.fillWidth: true; value: 0.62; fillColor: Theme.colors.accent; handleIcon: Icons.fan }
-                    Text { text: "Auto • Face + feet • Clean air enabled"; color: Theme.colors.textSecondary; font.family: Theme.typography.family; font.pixelSize: Theme.typography.subtitle; wrapMode: Text.WordWrap }
+                    ValueSlider {
+                        Layout.fillWidth: true
+                        value: climateControls.fanSpeed
+                        fillColor: Theme.colors.accent
+                        handleIcon: Icons.fan
+                        onMoved: climateControls.fanSpeed = value
+                    }
+                    Text {
+                        text: (climateControls.autoMode ? "Auto" : "Manual")
+                              + " • " + (climateControls.acOn ? "A/C on" : "A/C off")
+                              + " • " + (climateControls.defrostOn ? "Defrost active" : "Face + feet")
+                        color: Theme.colors.textSecondary
+                        font.family: Theme.typography.family
+                        font.pixelSize: Theme.typography.subtitle
+                        wrapMode: Text.WordWrap
+                    }
                     Item { Layout.fillHeight: true }
-                    Text { text: "SYNC"; color: Theme.colors.accent; font.family: Theme.typography.family; font.pixelSize: 38; font.weight: Theme.typography.weightBold }
+                    Text { text: climateControls.autoMode ? "AUTO" : "MANUAL"; color: Theme.colors.accent; font.family: Theme.typography.family; font.pixelSize: 38; font.weight: Theme.typography.weightBold }
                 }
             }
         }

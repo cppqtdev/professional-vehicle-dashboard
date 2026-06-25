@@ -19,12 +19,13 @@ Control {
         property string title
         property string subtitle
         property color accent: Theme.colors.accent
+        property bool available: page.controller.parkedAllowed
 
         padding: 18
 
         background: Surface {
             radius: Theme.metrics.cardRadius
-            color: Theme.colors.tile
+            color: tile.available ? Theme.colors.tile : Theme.colors.surfaceVariant
             neomorph: true
         }
 
@@ -35,7 +36,7 @@ Control {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 source: tile.icon
                 size: 42
-                color: tile.accent
+                color: tile.available ? tile.accent : Theme.colors.iconMuted
             }
 
             Item { Layout.fillHeight: true }
@@ -43,7 +44,7 @@ Control {
             Text {
                 Layout.fillWidth: true
                 text: tile.title
-                color: Theme.colors.textPrimary
+                color: tile.available ? Theme.colors.textPrimary : Theme.colors.textSecondary
                 font.family: Theme.typography.family
                 font.pixelSize: Theme.typography.subtitle
                 font.weight: Theme.typography.weightBold
@@ -52,7 +53,7 @@ Control {
 
             Text {
                 Layout.fillWidth: true
-                text: tile.subtitle
+                text: tile.available ? tile.subtitle : "Locked while driving"
                 color: Theme.colors.textSecondary
                 font.family: Theme.typography.family
                 font.pixelSize: Theme.typography.caption
@@ -69,7 +70,8 @@ Control {
         RowLayout {
             Layout.fillWidth: true
             Text { Layout.fillWidth: true; text: "Parked mode"; color: Theme.colors.textPrimary; font.family: Theme.typography.family; font.pixelSize: 30; font.weight: Theme.typography.weightBold }
-            Text { text: "Available while vehicle is parked"; color: Theme.colors.textSecondary; font.family: Theme.typography.family; font.pixelSize: Theme.typography.subtitle }
+            Text { text: page.controller.parkedAllowed ? "Available while vehicle is parked" : "Driving safety lock active"; color: page.controller.parkedAllowed ? Theme.colors.textSecondary : Theme.colors.danger; font.family: Theme.typography.family; font.pixelSize: Theme.typography.subtitle }
+            SwitchControl { checked: page.controller.vehicleMoving; onToggled: (c) => vehicleControls.vehicleMoving = c }
         }
 
         GridLayout {
