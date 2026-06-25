@@ -19,6 +19,24 @@ CarPlay-style dashboards, EV control systems, and in-car glanceable UI design.
 - Customizable Home right-side widget slot.
 - Home widget options: Weather, Music, Energy, Quick Controls, Navigation,
   Climate, Vehicle Status/Tires, and Trip.
+- App launcher/menu page with feature tiles and direct navigation.
+- Dedicated Navigation screen with map mock, route summary, ETA, traffic,
+  nearby chargers/parking/incidents/tolls, and start-guidance controls.
+- Vehicle Status screen for doors, windows, lights, tire pressure, warnings,
+  and service reminders.
+- Climate screen for temperature zones, fan, seat comfort, defrost, airflow,
+  and sync controls.
+- Expanded EV Energy screen with charge limit, charging schedule, battery
+  health, cost estimate, arrival battery, and fast-charge stop summary.
+- Driver Profiles screen for saved seat, climate, theme, and widget presets.
+- Notifications center for vehicle alerts, calls/messages, weather, charging,
+  and maintenance.
+- Voice Assistant screen with listening state and command suggestions.
+- Parked Mode dashboard for video/apps/browser-style tiles.
+- Safety screen for driving lockouts, simplified UI, larger touch targets, and
+  do-not-disturb style controls.
+- Theme Studio screen for auto day/night, ambient accent, texture packs, and
+  wallpaper-style presets.
 - Home weather detail view with 5-day forecast.
 - Music browse/detail pages.
 - Control, Energy, and Settings tabs inside the vehicle control screen.
@@ -28,27 +46,19 @@ CarPlay-style dashboards, EV control systems, and in-car glanceable UI design.
 
 - Home widget editor with drag/reorder, widget size presets, and live preview.
 - Multiple Home widget slots instead of only one right-side widget.
-- Dedicated Navigation page: map mock, route cards, ETA, traffic, nearby chargers
-  and parking.
-- Vehicle status page: doors, windows, lights, tire pressure, warnings, service
-  reminders.
-- Climate page: seat heat/ventilation, airflow direction, defrost, fan zones,
-  sync mode.
-- EV/energy expansion: charging schedule, charge limit, battery health, cost
-  estimate, route-aware range.
-- App launcher/menu page: grid of apps with categories and search.
-- Notifications center: vehicle alerts, calls/messages, weather alerts,
-  maintenance reminders.
+- Real map SDK integration with turn-by-turn route geometry and live traffic.
+- Real vehicle signal binding for doors, tires, lights, climate, charging, and
+  warning states.
+- Persist driver profiles and home widget layouts through `QSettings`.
+- Real media queue/library data and connected call/message notification data.
 
 ### Medium Priority
 
-- Driver profile system with saved seat/climate/theme/widget preferences.
-- Voice assistant panel with command suggestions and listening state.
-- Safety states: driving lockouts, simplified UI while moving, larger active
-  touch targets.
-- Theme system: auto day/night, ambient accent color, wallpaper/texture packs.
+- Voice command recognition and hands-free command execution.
+- True parked-mode gating using vehicle speed/gear state.
+- Real browser/video app integration for parked mode.
+- Theme presets with saved accent/wallpaper/texture combinations.
 - Side navigation redesign: active indicators, badges, long-press shortcuts.
-- Parked mode: video/apps/browser-style dashboard only while parked.
 - Calendar/commute widget and calls/messages widgets.
 - Accessibility pass: contrast, touch targets, focus order, reduced motion.
 
@@ -128,5 +138,3 @@ qmake6 smartuidesign.pro && make && ./smartuidesign
 ```
 
 or open `smartuidesign.pro` in Qt Creator and Run.
-```
-```

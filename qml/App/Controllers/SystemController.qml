@@ -35,7 +35,7 @@ QtObject {
     property string network: "4G"
     property string time: appBackend.time
     property string date: appBackend.date
-    property int navIndex: 0   // 0 nav/home, 1 music, 2 car/control, 3 menu/infotainment
+    property int navIndex: 0   // 0 home, 1 music, 2 control, 3 launcher, 4 quick settings, 5+ features
 
     // ---- Control page -----------------------------------------------------
     property bool centralLock: true

@@ -364,6 +364,7 @@ Item {
 
     component NavigationHomeWidget: Surface {
         id: widget
+        property SystemController controller
         width: page.homeWidgetWidth
         height: page.homeWidgetHeight
         radius: Theme.metrics.cardRadius
@@ -419,6 +420,12 @@ Item {
                 color: Theme.colors.accent
                 opacity: 0.28
             }
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            onClicked: widget.controller.navIndex = 5
         }
     }
 
@@ -648,7 +655,7 @@ Item {
             }
             Component {
                 id: navigationWidgetComponent
-                NavigationHomeWidget {}
+                NavigationHomeWidget { controller: page.controller }
             }
             Component {
                 id: climateWidgetComponent

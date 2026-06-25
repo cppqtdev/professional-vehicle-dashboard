@@ -13,26 +13,26 @@ import App.Controllers
 Control {
     id: view
     property SystemController controller
+    padding: 30
+    topPadding: 0
+    bottomPadding: 20
 
-    RowLayout {
-        anchors.fill: parent
-        anchors.leftMargin: 30
-        anchors.rightMargin: 30
-        anchors.topMargin: 10
-        anchors.bottomMargin: 20
+    contentItem: RowLayout {
         spacing: Theme.metrics.spacing
 
         // ---- Battery / range card ----------------------------------------
-        Surface {
+        Control {
             Layout.preferredWidth: 360
             Layout.fillHeight: true
-            radius: Theme.metrics.cardRadius
-            neomorph: true
-            color: Theme.colors.tile
 
-            ColumnLayout {
-                anchors.fill: parent
-                anchors.margins: 28
+            padding: 28
+            background: Surface {
+                radius: Theme.metrics.cardRadius
+                neomorph: true
+                color: Theme.colors.tile
+            }
+
+            contentItem: ColumnLayout {
                 spacing: 14
 
                 RowLayout {
@@ -77,6 +77,44 @@ Control {
                     font.pixelSize: Theme.typography.subtitle
                 }
 
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: 12
+                    Text {
+                        Layout.fillWidth: true
+                        text: "Charge limit"
+                        color: Theme.colors.textSecondary
+                        font.family: Theme.typography.family
+                        font.pixelSize: Theme.typography.caption
+                    }
+                    Text {
+                        text: "85%"
+                        color: Theme.colors.textPrimary
+                        font.family: Theme.typography.family
+                        font.pixelSize: Theme.typography.subtitle
+                        font.weight: Theme.typography.weightBold
+                    }
+                }
+
+                RowLayout {
+                    Layout.fillWidth: true
+                    spacing: 12
+                    Text {
+                        Layout.fillWidth: true
+                        text: "Scheduled charge"
+                        color: Theme.colors.textSecondary
+                        font.family: Theme.typography.family
+                        font.pixelSize: Theme.typography.caption
+                    }
+                    Text {
+                        text: "23:30"
+                        color: Theme.colors.textPrimary
+                        font.family: Theme.typography.family
+                        font.pixelSize: Theme.typography.subtitle
+                        font.weight: Theme.typography.weightBold
+                    }
+                }
+
                 Item { Layout.fillHeight: true }
             }
         }
@@ -112,6 +150,30 @@ Control {
                 icon: Icons.battery; accent: Theme.colors.danger
                 value: view.controller.batteryTemp + "°C"
                 label: "Battery temp"
+            }
+            StatCard {
+                Layout.fillWidth: true; Layout.fillHeight: true
+                icon: Icons.shield; accent: Theme.colors.success
+                value: "96%"
+                label: "Battery health"
+            }
+            StatCard {
+                Layout.fillWidth: true; Layout.fillHeight: true
+                icon: Icons.globe; accent: Theme.colors.success
+                value: "¥18"
+                label: "Est. charge cost"
+            }
+            StatCard {
+                Layout.fillWidth: true; Layout.fillHeight: true
+                icon: Icons.nav; accent: Theme.colors.accent
+                value: "22%"
+                label: "Arrival battery"
+            }
+            StatCard {
+                Layout.fillWidth: true; Layout.fillHeight: true
+                icon: Icons.bolt; accent: Theme.colors.danger
+                value: "32m"
+                label: "Fast charge stop"
             }
         }
     }

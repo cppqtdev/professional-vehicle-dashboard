@@ -28,8 +28,19 @@
         <file>qml/App/Screens/AppShell.qml</file>
         <file>qml/App/Screens/HomePage.qml</file>
         <file>qml/App/Screens/MusicPage.qml</file>
+        <file>qml/App/Screens/InfotainmentScreen.qml</file>
         <file>qml/App/Screens/InfotainmentPage.qml</file>
         <file>qml/App/Screens/ControlPage.qml</file>
+        <file>qml/App/Screens/NavigationPage.qml</file>
+        <file>qml/App/Screens/AppLauncherPage.qml</file>
+        <file>qml/App/Screens/VehicleStatusPage.qml</file>
+        <file>qml/App/Screens/ClimatePage.qml</file>
+        <file>qml/App/Screens/DriverProfilesPage.qml</file>
+        <file>qml/App/Screens/NotificationsPage.qml</file>
+        <file>qml/App/Screens/VoiceAssistantPage.qml</file>
+        <file>qml/App/Screens/ParkedModePage.qml</file>
+        <file>qml/App/Screens/SafetyPage.qml</file>
+        <file>qml/App/Screens/ThemeStudioPage.qml</file>
         <file>icons/signal.svg</file>
         <file>icons/cellular.svg</file>
         <file>icons/bluetooth.svg</file>

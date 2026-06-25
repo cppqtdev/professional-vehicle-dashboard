@@ -5,3 +5,13 @@ HomePage 1.0 HomePage.qml
 MusicPage 1.0 MusicPage.qml
 InfotainmentPage 1.0 InfotainmentPage.qml
 ControlPage 1.0 ControlPage.qml
+NavigationPage 1.0 NavigationPage.qml
+AppLauncherPage 1.0 AppLauncherPage.qml
+VehicleStatusPage 1.0 VehicleStatusPage.qml
+ClimatePage 1.0 ClimatePage.qml
+DriverProfilesPage 1.0 DriverProfilesPage.qml
+NotificationsPage 1.0 NotificationsPage.qml
+VoiceAssistantPage 1.0 VoiceAssistantPage.qml
+ParkedModePage 1.0 ParkedModePage.qml
+SafetyPage 1.0 SafetyPage.qml
+ThemeStudioPage 1.0 ThemeStudioPage.qml

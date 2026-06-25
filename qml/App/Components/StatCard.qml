@@ -2,56 +2,63 @@
 // A soft-UI metric card: an accent icon + value on top, caption beneath.
 
 import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 import App.Theme
 import App.Components
 
-Surface {
+Control {
     id: card
 
     property url icon
     property string value: ""
     property string label: ""
     property color accent: Theme.colors.accent
-    property int iconSize: 32
+    property int iconSize: 28
 
-    radius: Theme.metrics.cardRadius
-    neomorph: true
-    color: Theme.colors.tile
-    implicitWidth: 240
-    implicitHeight: 136
+    padding: 18
+    background: Surface {
+        implicitWidth: 240
+        implicitHeight: 136
+        radius: Theme.metrics.cardRadius
+        neomorph: true
+        color: Theme.colors.tile
+    }
 
-    Column {
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.leftMargin: 28
-        anchors.rightMargin: 24
-        anchors.verticalCenter: parent.verticalCenter
-        spacing: 12
+    contentItem: ColumnLayout {
+        spacing: 8
 
-        Row {
+        RowLayout {
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
             spacing: 18
+
             AppIcon {
-                anchors.verticalCenter: parent.verticalCenter
+                Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                 source: card.icon
                 size: card.iconSize
                 color: card.accent
             }
+
             Text {
-                anchors.verticalCenter: parent.verticalCenter
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                 text: card.value
                 color: Theme.colors.textPrimary
                 font.family: Theme.typography.family
-                font.pixelSize: 31
+                font.pixelSize: 24
                 font.weight: Theme.typography.weightBold
             }
         }
+
         Text {
-            width: parent.width
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
             elide: Text.ElideRight
             text: card.label
             color: Theme.colors.textSecondary
             font.family: Theme.typography.family
-            font.pixelSize: 17
+            font.pixelSize: 16
         }
     }
 }
